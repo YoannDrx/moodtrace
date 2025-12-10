@@ -207,7 +207,7 @@ export const auth = betterAuth({
         logger.debug("Sending OTP", { email, otp });
         await sendEmail({
           to: email,
-          subject: `Your code to sign in to ${SiteConfig.title} ${otp}`,
+          subject: `Your code to sign in to ${SiteConfig.title}`,
           html: MarkdownEmail({
             preview: `Your code to sign in to ${SiteConfig.title}`,
             markdown: `
