@@ -56,6 +56,15 @@
   --color-mood-9: var(--mood-9);
   --color-mood-10: var(--mood-10);
 
+  /* MoodTrace Bipolar Mood Colors (-3 to +3 scale) */
+  --color-mood-bipolar-minus-3: var(--mood-bipolar-minus-3);
+  --color-mood-bipolar-minus-2: var(--mood-bipolar-minus-2);
+  --color-mood-bipolar-minus-1: var(--mood-bipolar-minus-1);
+  --color-mood-bipolar-0: var(--mood-bipolar-0);
+  --color-mood-bipolar-plus-1: var(--mood-bipolar-plus-1);
+  --color-mood-bipolar-plus-2: var(--mood-bipolar-plus-2);
+  --color-mood-bipolar-plus-3: var(--mood-bipolar-plus-3);
+
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
@@ -77,6 +86,12 @@
   /* Custom */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-fade-out: fade-out 0.3s ease-out;
+  --animate-slide-up: slide-up 0.4s ease-out;
+  --animate-slide-down: slide-down 0.4s ease-out;
+  --animate-scale-in: scale-in 0.2s ease-out;
+  --animate-scale-out: scale-out 0.2s ease-out;
   --container-8xl: 112rem;
   --container-9xl: 120rem;
   --container-10xl: 128rem;
@@ -96,6 +111,68 @@
     }
     to {
       height: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-down {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-out {
+    from {
+      transform: scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: scale(0.95);
+      opacity: 0;
     }
   }
 }
@@ -210,6 +287,15 @@
   --mood-8: oklch(0.65 0.14 165); /* Very good - emerald */
   --mood-9: oklch(0.65 0.12 185); /* Excellent - teal */
   --mood-10: oklch(0.7 0.13 195); /* Optimal - cyan */
+
+  /* Bipolar mood colors (-3 to +3 scale) */
+  --mood-bipolar-minus-3: oklch(0.55 0.22 25); /* Very low - red */
+  --mood-bipolar-minus-2: oklch(0.60 0.18 45); /* Low - dark orange */
+  --mood-bipolar-minus-1: oklch(0.75 0.15 75); /* Slightly low - amber */
+  --mood-bipolar-0: oklch(0.65 0.20 145); /* Stable - green */
+  --mood-bipolar-plus-1: oklch(0.80 0.17 95); /* Slightly elevated - yellow */
+  --mood-bipolar-plus-2: oklch(0.70 0.13 195); /* Elevated - cyan */
+  --mood-bipolar-plus-3: oklch(0.60 0.18 295); /* Very elevated - violet */
 }
 
 /* =============================================================================
@@ -318,6 +404,15 @@
   --mood-8: oklch(0.68 0.14 165);
   --mood-9: oklch(0.68 0.12 185);
   --mood-10: oklch(0.73 0.13 195);
+
+  /* Bipolar mood colors (-3 to +3 scale) - slightly brighter for dark mode */
+  --mood-bipolar-minus-3: oklch(0.58 0.22 25); /* Very low - red */
+  --mood-bipolar-minus-2: oklch(0.63 0.18 45); /* Low - dark orange */
+  --mood-bipolar-minus-1: oklch(0.78 0.15 75); /* Slightly low - amber */
+  --mood-bipolar-0: oklch(0.68 0.20 145); /* Stable - green */
+  --mood-bipolar-plus-1: oklch(0.82 0.17 95); /* Slightly elevated - yellow */
+  --mood-bipolar-plus-2: oklch(0.73 0.13 195); /* Elevated - cyan */
+  --mood-bipolar-plus-3: oklch(0.63 0.18 295); /* Very elevated - violet */
 }
 
 @layer base {

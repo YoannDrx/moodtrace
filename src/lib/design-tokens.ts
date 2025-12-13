@@ -520,7 +520,7 @@ export function getMoodOklchColor(value: number): string {
 export type MoodValue = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 /**
- * Labels pour les niveaux d'humeur
+ * Labels pour les niveaux d'humeur (échelle 1-10)
  */
 export const moodLabels: Record<MoodValue, string> = {
   1: "Très difficile",
@@ -533,4 +533,222 @@ export const moodLabels: Record<MoodValue, string> = {
   8: "Très bien",
   9: "Excellent",
   10: "Optimal",
+};
+
+// =============================================================================
+// ÉCHELLE D'HUMEUR BIPOLAIRE (-3 à +3)
+// =============================================================================
+
+/**
+ * Type pour les valeurs d'humeur bipolaires (-3 à +3)
+ * Centrée sur 0 (stable), avec valeurs négatives et positives
+ */
+export type MoodValueBipolar = -3 | -2 | -1 | 0 | 1 | 2 | 3;
+
+/**
+ * Couleurs d'humeur bipolaires (-3 à +3)
+ * -3: Rouge (très bas/dépressif)
+ * -2: Orange foncé
+ * -1: Orange
+ *  0: Vert (stable)
+ * +1: Jaune/Or
+ * +2: Cyan clair
+ * +3: Violet (très élevé/maniaque)
+ */
+export const moodBipolarColors = {
+  "-3": "#DC2626", // Rouge vif - très bas
+  "-2": "#EA580C", // Orange foncé
+  "-1": "#F59E0B", // Orange/Ambre
+  "0": "#22C55E", // Vert - stable
+  "1": "#EAB308", // Jaune/Or
+  "2": "#06B6D4", // Cyan
+  "3": "#8B5CF6", // Violet - très élevé
+} as const;
+
+/**
+ * Couleurs OKLch pour mood bipolaire
+ */
+export const moodBipolarOklchColors = {
+  "-3": "oklch(0.55 0.22 25)", // Rouge
+  "-2": "oklch(0.60 0.18 45)", // Orange foncé
+  "-1": "oklch(0.75 0.15 75)", // Orange/Ambre
+  "0": "oklch(0.65 0.20 145)", // Vert stable
+  "1": "oklch(0.80 0.17 95)", // Jaune/Or
+  "2": "oklch(0.70 0.13 195)", // Cyan
+  "3": "oklch(0.60 0.18 295)", // Violet
+} as const;
+
+/**
+ * Labels pour mood bipolaire (FR)
+ */
+export const moodBipolarLabels: Record<MoodValueBipolar, string> = {
+  "-3": "Très bas",
+  "-2": "Bas",
+  "-1": "Légèrement bas",
+  "0": "Stable",
+  "1": "Légèrement élevé",
+  "2": "Élevé",
+  "3": "Très élevé",
+};
+
+/**
+ * Labels pour mood bipolaire (EN)
+ */
+export const moodBipolarLabelsEn: Record<MoodValueBipolar, string> = {
+  "-3": "Very low",
+  "-2": "Low",
+  "-1": "Slightly low",
+  "0": "Stable",
+  "1": "Slightly elevated",
+  "2": "Elevated",
+  "3": "Very elevated",
+};
+
+/**
+ * Récupère la couleur d'humeur bipolaire par valeur (-3 à +3)
+ */
+export function getMoodBipolarColor(value: MoodValueBipolar): string {
+  return moodBipolarColors[String(value) as keyof typeof moodBipolarColors];
+}
+
+/**
+ * Récupère la couleur OKLch d'humeur bipolaire par valeur (-3 à +3)
+ */
+export function getMoodBipolarOklchColor(value: MoodValueBipolar): string {
+  return moodBipolarOklchColors[
+    String(value) as keyof typeof moodBipolarOklchColors
+  ];
+}
+
+/**
+ * Récupère le label d'humeur bipolaire par valeur (-3 à +3)
+ */
+export function getMoodBipolarLabel(
+  value: MoodValueBipolar,
+  locale: "fr" | "en" = "fr",
+): string {
+  return locale === "en"
+    ? moodBipolarLabelsEn[value]
+    : moodBipolarLabels[value];
+}
+
+// =============================================================================
+// TAGS & OPTIONS PRÉDÉFINIS
+// =============================================================================
+
+/**
+ * Tags de contexte pour le check-in quotidien
+ */
+export const contextTags = [
+  "conflit",
+  "stress_pro",
+  "alcool",
+  "soiree_tardive",
+  "voyage",
+  "sport",
+  "meditation",
+  "rdv_medical",
+  "fatigue",
+  "anxiete",
+] as const;
+
+export type ContextTag = (typeof contextTags)[number];
+
+/**
+ * Labels pour les tags de contexte (FR)
+ */
+export const contextTagLabels: Record<ContextTag, string> = {
+  conflit: "Conflit",
+  stress_pro: "Stress pro",
+  alcool: "Alcool",
+  soiree_tardive: "Soirée tardive",
+  voyage: "Voyage",
+  sport: "Sport",
+  meditation: "Méditation",
+  rdv_medical: "RDV médical",
+  fatigue: "Fatigue",
+  anxiete: "Anxiété",
+};
+
+/**
+ * Labels pour les tags de contexte (EN)
+ */
+export const contextTagLabelsEn: Record<ContextTag, string> = {
+  conflit: "Conflict",
+  stress_pro: "Work stress",
+  alcool: "Alcohol",
+  soiree_tardive: "Late night",
+  voyage: "Travel",
+  sport: "Exercise",
+  meditation: "Meditation",
+  rdv_medical: "Medical appointment",
+  fatigue: "Fatigue",
+  anxiete: "Anxiety",
+};
+
+/**
+ * Effets secondaires des médicaments
+ */
+export const sideEffects = [
+  "maux_de_tete",
+  "nausees",
+  "tremblements",
+  "somnolence",
+  "insomnie",
+  "prise_de_poids",
+  "bouche_seche",
+  "vertiges",
+] as const;
+
+export type SideEffect = (typeof sideEffects)[number];
+
+/**
+ * Labels pour les effets secondaires (FR)
+ */
+export const sideEffectLabels: Record<SideEffect, string> = {
+  maux_de_tete: "Maux de tête",
+  nausees: "Nausées",
+  tremblements: "Tremblements",
+  somnolence: "Somnolence",
+  insomnie: "Insomnie",
+  prise_de_poids: "Prise de poids",
+  bouche_seche: "Bouche sèche",
+  vertiges: "Vertiges",
+};
+
+/**
+ * Labels pour les effets secondaires (EN)
+ */
+export const sideEffectLabelsEn: Record<SideEffect, string> = {
+  maux_de_tete: "Headache",
+  nausees: "Nausea",
+  tremblements: "Tremors",
+  somnolence: "Drowsiness",
+  insomnie: "Insomnia",
+  prise_de_poids: "Weight gain",
+  bouche_seche: "Dry mouth",
+  vertiges: "Dizziness",
+};
+
+/**
+ * Qualités de sommeil
+ */
+export type SleepQuality = "bad" | "average" | "good";
+
+/**
+ * Labels pour la qualité de sommeil (FR)
+ */
+export const sleepQualityLabels: Record<SleepQuality, string> = {
+  bad: "Mauvais",
+  average: "Moyen",
+  good: "Bon",
+};
+
+/**
+ * Labels pour la qualité de sommeil (EN)
+ */
+export const sleepQualityLabelsEn: Record<SleepQuality, string> = {
+  bad: "Bad",
+  average: "Average",
+  good: "Good",
 };
