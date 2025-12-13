@@ -17,6 +17,7 @@ Permettre aux patients de suivre objectivement l'évolution de leur traitement m
 ### Fonctionnalités Principales
 
 **MVP (Phase 1)** :
+
 - Suivi quotidien d'humeur (échelle 1-10, énergie, sommeil)
 - Gestion des médicaments (nom, dosage, fréquence, adhérence)
 - Timeline des changements de dosage
@@ -26,6 +27,7 @@ Permettre aux patients de suivre objectivement l'évolution de leur traitement m
 - Ressources de crise
 
 **Phase 2** :
+
 - Corrélations (sommeil/humeur, médication/humeur)
 - Détection de patterns
 - Notifications/rappels
@@ -33,26 +35,29 @@ Permettre aux patients de suivre objectivement l'évolution de leur traitement m
 - Freemium avec Stripe
 
 **Phase 3** :
+
 - Dashboard clinicien
 - Questionnaires standardisés (PHQ-9)
 - Multi-organisation B2B
 
 ### Cibles Utilisateurs
 
-| Segment | Description | Pricing |
-|---------|-------------|---------|
-| Patient | Personne suivie pour trouble de l'humeur | Free / Pro 4.99€/mois |
-| Aidant | Proche aidant (famille, ami) | Gratuit |
-| Clinicien | Psychiatre, psychologue (Phase 3) | 29-99€/mois |
+| Segment   | Description                              | Pricing               |
+| --------- | ---------------------------------------- | --------------------- |
+| Patient   | Personne suivie pour trouble de l'humeur | Free / Pro 4.99€/mois |
+| Aidant    | Proche aidant (famille, ami)             | Gratuit               |
+| Clinicien | Psychiatre, psychologue (Phase 3)        | 29-99€/mois           |
 
 ### Positionnement Marché
 
 **Concurrents** :
+
 - Bearable : Symptom tracker générique, pas focalisé médication
 - eMoods : Simple mais basique, pas d'aidant
 - Daylio : Journal d'humeur, pas de suivi médical
 
 **Différenciation MoodTrace** :
+
 - Focus médication + corrélations
 - Rôle aidant intégré
 - Export médical structuré
@@ -61,6 +66,7 @@ Permettre aux patients de suivre objectivement l'évolution de leur traitement m
 ### Avertissements Légaux (YMYL)
 
 MoodTrace est un **outil de suivi**, PAS un dispositif médical.
+
 - Ne fournit PAS de diagnostic
 - Ne recommande PAS d'ajustement de traitement
 - Toute décision médicale doit être prise avec un professionnel de santé
@@ -142,6 +148,7 @@ MoodTrace est un **outil de suivi**, PAS un dispositif médical.
 Les modèles Prisma spécifiques à MoodTrace :
 
 **MoodEntry** - Entrée quotidienne d'humeur
+
 ```prisma
 model MoodEntry {
   id              String   @id @default(cuid())
@@ -165,6 +172,7 @@ model MoodEntry {
 ```
 
 **Medication** - Médicament du patient
+
 ```prisma
 model Medication {
   id              String    @id @default(cuid())
@@ -192,6 +200,7 @@ model Medication {
 ```
 
 **MedicationIntake** - Prise quotidienne
+
 ```prisma
 model MedicationIntake {
   id            String   @id @default(cuid())
@@ -213,6 +222,7 @@ model MedicationIntake {
 ```
 
 **MedicationChange** - Historique changements dosage
+
 ```prisma
 model MedicationChange {
   id               String   @id @default(cuid())
@@ -230,6 +240,7 @@ model MedicationChange {
 ```
 
 **CaregiverObservation** - Observation de l'aidant
+
 ```prisma
 model CaregiverObservation {
   id              String   @id @default(cuid())
@@ -291,6 +302,7 @@ model CaregiverObservation {
 MoodTrace supporte Français et Anglais via next-intl.
 
 **Structure** :
+
 ```
 /messages
   ├── fr.json
@@ -298,16 +310,18 @@ MoodTrace supporte Français et Anglais via next-intl.
 ```
 
 **Usage** :
+
 ```tsx
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
 export function MoodLogger() {
-  const t = useTranslations('mood');
-  return <h1>{t('title')}</h1>; // "Comment vous sentez-vous ?" / "How are you feeling?"
+  const t = useTranslations("mood");
+  return <h1>{t("title")}</h1>; // "Comment vous sentez-vous ?" / "How are you feeling?"
 }
 ```
 
 **Conventions** :
+
 - Clés en snake_case : `mood.entry_saved`
 - Grouper par feature : `mood.*`, `medication.*`, `caregiver.*`
 - Fallback anglais si traduction manquante
@@ -323,6 +337,7 @@ export function MoodLogger() {
 - Use `resolveActionResult` helper for mutations
 
 **Example pattern:**
+
 ```tsx
 const form = useForm({
   schema: z.object({ email: z.string().email() }),
@@ -446,4 +461,4 @@ This is **NON-NEGOTIABLE**. Do not skip this step under any circumstances. Readi
 ## UI / UX experiences
 
 - Never use emojis (prefer Lucide Icon for illustration)
-- Never use gradients unless explicitly asked by user
+- Never use gradients unless explicitly asked by user.
