@@ -2,9 +2,68 @@
 
 This file provides guidance to AI Agents.
 
-## About the project <NAME>
+## About MoodTrace
 
-If you read this, ask question about the project to fill this part. You need to describe what is the purpose of the project, main feature and goals.
+**MoodTrace** est une application web PWA de suivi de santé mentale conçue pour les personnes atteintes de troubles de l'humeur (bipolaire, dépression, TDAH, anxiété).
+
+### Mission
+
+Permettre aux patients de suivre objectivement l'évolution de leur traitement médicamenteux et son impact sur leur humeur, afin d'optimiser leur parcours de soins en collaboration avec leur médecin.
+
+### Claim
+
+> "Medication-aware mood tracker" - Pas juste un mood tracker, mais un outil qui corrèle médication et bien-être.
+
+### Fonctionnalités Principales
+
+**MVP (Phase 1)** :
+- Suivi quotidien d'humeur (échelle 1-10, énergie, sommeil)
+- Gestion des médicaments (nom, dosage, fréquence, adhérence)
+- Timeline des changements de dosage
+- Dashboard trends (7/30 jours)
+- Rôle aidant (observations externes)
+- Export PDF pour consultations
+- Ressources de crise
+
+**Phase 2** :
+- Corrélations (sommeil/humeur, médication/humeur)
+- Détection de patterns
+- Notifications/rappels
+- Wearables (Apple Health, Google Fit)
+- Freemium avec Stripe
+
+**Phase 3** :
+- Dashboard clinicien
+- Questionnaires standardisés (PHQ-9)
+- Multi-organisation B2B
+
+### Cibles Utilisateurs
+
+| Segment | Description | Pricing |
+|---------|-------------|---------|
+| Patient | Personne suivie pour trouble de l'humeur | Free / Pro 4.99€/mois |
+| Aidant | Proche aidant (famille, ami) | Gratuit |
+| Clinicien | Psychiatre, psychologue (Phase 3) | 29-99€/mois |
+
+### Positionnement Marché
+
+**Concurrents** :
+- Bearable : Symptom tracker générique, pas focalisé médication
+- eMoods : Simple mais basique, pas d'aidant
+- Daylio : Journal d'humeur, pas de suivi médical
+
+**Différenciation MoodTrace** :
+- Focus médication + corrélations
+- Rôle aidant intégré
+- Export médical structuré
+- Avant/après changement de traitement
+
+### Avertissements Légaux (YMYL)
+
+MoodTrace est un **outil de suivi**, PAS un dispositif médical.
+- Ne fournit PAS de diagnostic
+- Ne recommande PAS d'ajustement de traitement
+- Toute décision médicale doit être prise avec un professionnel de santé
 
 ## Development Commands
 
@@ -78,6 +137,119 @@ If you read this, ask question about the project to fill this part. You need to 
 - **Forms**: TanStack Form with Zod validation and server actions
 - **Email System**: Transactional emails with React Email
 
+### Domain Models (MoodTrace)
+
+Les modèles Prisma spécifiques à MoodTrace :
+
+**MoodEntry** - Entrée quotidienne d'humeur
+```prisma
+model MoodEntry {
+  id              String   @id @default(cuid())
+  userId          String
+  organizationId  String
+  date            DateTime @db.Date
+  mood            Int      // 1-10
+  energy          Int?     // 1-10
+  sleepHours      Float?
+  sleepQuality    Int?     // 1-10
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId, date])
+}
+```
+
+**Medication** - Médicament du patient
+```prisma
+model Medication {
+  id              String    @id @default(cuid())
+  userId          String
+  organizationId  String
+  name            String    // "Lamictal"
+  molecule        String?   // "Lamotrigine"
+  dosageMg        Int
+  frequency       String    // "daily", "twice_daily", "as_needed"
+  timeOfDay       String?   // "morning", "evening", "both"
+  startDate       DateTime  @db.Date
+  endDate         DateTime? @db.Date
+  isActive        Boolean   @default(true)
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  intakes      MedicationIntake[]
+  changes      MedicationChange[]
+
+  @@index([userId, isActive])
+}
+```
+
+**MedicationIntake** - Prise quotidienne
+```prisma
+model MedicationIntake {
+  id            String   @id @default(cuid())
+  userId        String
+  medicationId  String
+  date          DateTime @db.Date
+  plannedTime   String?  // "08:00"
+  takenTime     String?  // "08:15" ou null si non pris
+  status        String   // "taken", "missed", "delayed"
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medication Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  @@unique([medicationId, date])
+  @@index([userId, date])
+}
+```
+
+**MedicationChange** - Historique changements dosage
+```prisma
+model MedicationChange {
+  id               String   @id @default(cuid())
+  medicationId     String
+  previousDosageMg Int
+  newDosageMg      Int
+  changeDate       DateTime @db.Date
+  reason           String?  // "augmentation palier", "effet secondaire"
+  createdAt        DateTime @default(now())
+
+  medication Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  @@index([medicationId, changeDate])
+}
+```
+
+**CaregiverObservation** - Observation de l'aidant
+```prisma
+model CaregiverObservation {
+  id              String   @id @default(cuid())
+  caregiverId     String   // User ID de l'aidant
+  patientId       String   // User ID du patient
+  organizationId  String
+  date            DateTime @db.Date
+  moodObservation String   // "good", "neutral", "down", "concerning"
+  notes           String?
+  isPrivate       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  caregiver    User         @relation("CaregiverObservations", fields: [caregiverId], references: [id], onDelete: Cascade)
+  patient      User         @relation("PatientObservations", fields: [patientId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([patientId, date])
+}
+```
+
 ## Code Conventions
 
 ### TypeScript
@@ -113,6 +285,32 @@ If you read this, ask question about the project to fill this part. You need to 
 - Use `nuqs` for URL search parameter state
 - Zustand for global state (see dialog-store.ts)
 - TanStack Query for server state
+
+### Internationalization (i18n)
+
+MoodTrace supporte Français et Anglais via next-intl.
+
+**Structure** :
+```
+/messages
+  ├── fr.json
+  └── en.json
+```
+
+**Usage** :
+```tsx
+import { useTranslations } from 'next-intl';
+
+export function MoodLogger() {
+  const t = useTranslations('mood');
+  return <h1>{t('title')}</h1>; // "Comment vous sentez-vous ?" / "How are you feeling?"
+}
+```
+
+**Conventions** :
+- Clés en snake_case : `mood.entry_saved`
+- Grouper par feature : `mood.*`, `medication.*`, `caregiver.*`
+- Fallback anglais si traduction manquante
 
 ### Forms and Server Actions
 
