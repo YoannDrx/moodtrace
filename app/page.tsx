@@ -1,21 +1,16 @@
-import { EmailFormSection } from "@/features/email/email-form-section";
 import { BentoGridSection } from "@/features/landing/bento-section";
 import { CTASectionCard } from "@/features/landing/cta/cta-card-section";
-import { CTAImageSection } from "@/features/landing/cta/cta-image-section";
 import { CtaSection } from "@/features/landing/cta/cta-section";
+import { CrisisResourcesSection } from "@/features/landing/crisis-resources-section";
 import { FAQSection } from "@/features/landing/faq-section";
 import { FeaturesSection } from "@/features/landing/feature-section";
 import { Hero } from "@/features/landing/hero";
 import { LandingHeader } from "@/features/landing/landing-header";
 import { PainSection } from "@/features/landing/pain";
-import { ReviewGrid } from "@/features/landing/review/review-grid";
-import { ReviewSingle } from "@/features/landing/review/review-single";
 import { ReviewTriple } from "@/features/landing/review/review-triple";
 import { SectionDivider } from "@/features/landing/section-divider";
-import { StatsSection } from "@/features/landing/stats-section";
 import { Footer } from "@/features/layout/footer";
 import { Pricing } from "@/features/plans/pricing-section";
-import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -26,8 +21,6 @@ export default function HomePage() {
 
       <Hero />
 
-      <StatsSection />
-
       <BentoGridSection />
 
       <PainSection />
@@ -37,230 +30,90 @@ export default function HomePage() {
       <ReviewTriple
         reviews={[
           {
-            image: "https://i.pravatar.cc/300?u=a1",
-            name: "Sophie",
-            review: `Threader **has completely transformed the way I manage my social media** content. The ability to schedule posts and use AI for content suggestions has saved me hours each week.`,
-            role: "Digital Marketer",
+            image: "https://i.pravatar.cc/300?u=mt1",
+            name: "Marie L.",
+            review:
+              "MoodTrace m'a permis de **montrer a mon psychiatre exactement comment je me sentais** entre les consultations. Les donnees objectives ont aide a ajuster mon traitement de facon plus precise.",
+            role: "Patiente bipolaire",
           },
           {
-            image: "https://i.pravatar.cc/300?u=a2",
-            name: "Alex",
-            review: `Using Threader has significantly boosted my online engagement. **The analytics tool helps me understand what works**, allowing me to refine my strategy and grow my follower base.`,
-            role: "Social Media Influencer",
+            image: "https://i.pravatar.cc/300?u=mt2",
+            name: "Dr. Dupont",
+            review:
+              "Les rapports PDF de mes patients sont **precieux pour le suivi des traitements**. Je peux voir les correlations entre les changements de dosage et l'evolution de l'humeur.",
+            role: "Psychiatre",
           },
           {
-            image: "https://i.pravatar.cc/300?u=a3",
-            name: "Jordan",
-            review: `The ease of scheduling and the AI-generated content features are game-changers. **Threader's user-friendly interface** makes it perfect for anyone looking to enhance their online presence.`,
-            role: "Entrepreneur",
+            image: "https://i.pravatar.cc/300?u=mt3",
+            name: "Jean-Pierre M.",
+            review:
+              "Pouvoir noter mes observations en tant qu'aidant **aide ma femme a avoir une vision plus complete** de son etat. C'est un outil precieux pour notre famille.",
+            role: "Aidant familial",
           },
         ]}
       />
 
       <SectionDivider />
 
-      <ReviewSingle
-        image="https://i.pravatar.cc/300?u=5"
-        name="Michel"
-        review={`Threader **has completely transformed** the way I manage my social media content. The ability to schedule posts and use AI for content suggestions **has saved me hours each week.**`}
-        role="Digital Marketer"
-        compagnyImage="https://1000logos.net/wp-content/uploads/2017/03/McDonalds-Logo-2003.png"
-        key={1}
+      <FeaturesSection />
+
+      <CTASectionCard
+        title="Pret a mieux comprendre votre sante mentale ?"
+        description="Commencez gratuitement et decouvrez comment MoodTrace peut vous aider a optimiser votre traitement."
+        ctaText="Commencer maintenant"
+        ctaHref="/signin"
       />
-
-      <FeaturesSection
-        features={[
-          {
-            badge: "⏰ Schedule",
-            title: "Schedule your post",
-            description: "Schedule your post on the Threader in a few clicks.",
-            component: (
-              <Image
-                src="/images/placeholder1.gif"
-                alt=""
-                width={200}
-                height={100}
-                className="h-auto w-full object-cover"
-                unoptimized
-              />
-            ),
-          },
-          {
-            badge: "📅 Calendar",
-            title: "See what you scheduled",
-            description:
-              "With the calendar view, you can see what you scheduled and when.",
-            component: (
-              <Image
-                src="/images/placeholder1.gif"
-                alt=""
-                width={200}
-                height={100}
-                className="h-auto w-full object-cover"
-              />
-            ),
-          },
-          {
-            badge: "👁️ Preview",
-            title: "Preview your post",
-            description:
-              "Preview your post before scheduling it to see how it will look like.",
-            component: (
-              <Image
-                src="/images/placeholder1.gif"
-                alt=""
-                width={200}
-                height={100}
-                className="h-auto w-full object-cover"
-                unoptimized
-              />
-            ),
-          },
-          {
-            badge: "🔄 Repost",
-            title: "Schedule repost",
-            description:
-              "Automatically repost your post after a certain amount of time.",
-            component: (
-              <Image
-                src="/images/placeholder1.gif"
-                alt=""
-                width={200}
-                height={100}
-                className="h-auto w-full object-cover"
-                unoptimized
-              />
-            ),
-          },
-        ]}
-      />
-
-      <CTAImageSection />
-
-      <CTASectionCard />
-
-      <CtaSection />
 
       <Pricing />
 
       <FAQSection
         faq={[
           {
-            question: "What is Threader?",
+            question: "MoodTrace est-il un dispositif medical ?",
             answer:
-              "Threader is an innovative platform designed to help you write, schedule, and publish content to your account with the assistance of AI, enhancing your business's online presence.",
+              "Non, MoodTrace est un outil de suivi et d'aide a la decision, pas un dispositif medical. Il ne fournit aucun diagnostic ni recommandation de traitement. Toute decision concernant votre sante doit etre prise avec un professionnel de sante qualifie.",
           },
           {
-            question: "How does AI Content Generation work?",
+            question: "Mes donnees sont-elles securisees ?",
             answer:
-              "Our AI Content Generation feature leverages the power of artificial intelligence to create unique and engaging content for your Threads, making content creation easier and more efficient.",
+              "Oui, vos donnees sont chiffrees et stockees de maniere securisee, en conformite avec le RGPD. Vous restez proprietaire de vos donnees et pouvez les exporter ou les supprimer a tout moment.",
           },
           {
-            question: "Can I schedule my threads in advance?",
+            question: "Puis-je partager mes donnees avec mon medecin ?",
             answer:
-              "Yes, with Threader, you can schedule your threads for a specific time, allowing you to maintain a consistent online presence without the need to manually post every day.",
+              "Absolument. Vous pouvez generer des rapports PDF structures contenant vos donnees d'humeur, de medication et vos tendances. Ces rapports sont concus pour faciliter la communication avec votre equipe medicale.",
           },
           {
-            question: "What is the Now.TS project?",
+            question: "Comment fonctionne le role aidant ?",
             answer:
-              "Now.TS is a new project announced on our platform that enables users to create professional Next.js applications in days, streamlining the development process.",
+              "Avec votre autorisation, un proche de confiance peut etre invite comme aidant. Il pourra alors ajouter des observations externes sur votre etat, offrant une perspective complementaire a votre auto-evaluation.",
           },
           {
-            question: "How can I get more followers?",
+            question: "Quels troubles de l'humeur sont supportes ?",
             answer:
-              "To gain more followers, focus on creating content related to Next.js, as our analysis shows it's highly engaging. Utilize our research tools to understand trends and improve your content strategy.",
+              "MoodTrace est concu pour accompagner les personnes atteintes de divers troubles de l'humeur : trouble bipolaire, depression, anxiete, TDAH, et autres conditions necessitant un suivi de l'humeur et des medicaments.",
           },
           {
-            question: "What are the benefits of posting with Threader?",
+            question: "Y a-t-il un essai gratuit ?",
             answer:
-              "Posting with Threader allows you to schedule posts, avoid daily manual postings, track your scheduled content easily, and maintain consistency in your online activity.",
+              "Oui, le plan gratuit permet de commencer a suivre votre humeur immediatement. Le plan Pro offre un essai gratuit de 14 jours pour tester toutes les fonctionnalites avancees comme les correlations et le role aidant.",
           },
           {
-            question: "What pricing plans does Threader offer?",
+            question: "Comment annuler mon abonnement ?",
             answer:
-              "Threader offers two pricing plans: THREADER FREE, perfect for tiny creators, allowing you to schedule 1 post in advance; and THREADER PREMIUM, ideal for content creators, offering unlimited scheduling, post previews, and auto-reposting features.",
+              "Vous pouvez annuler votre abonnement a tout moment depuis les parametres de votre compte. Vos donnees restent accessibles et exportables meme apres l'annulation.",
           },
         ]}
       />
 
-      <SectionDivider />
+      <CrisisResourcesSection />
 
-      <ReviewGrid
-        reviews={[
-          {
-            image: "https://i.pravatar.cc/300?u=b1",
-            name: "Eva",
-            review:
-              "Since I started using Threader, my content creation process has been streamlined. The AI suggestions are spot on, helping me to connect better with my audience. Highly recommend for anyone looking to elevate their content game.",
-            role: "Content Creator",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b2",
-            name: "Lucas",
-            review:
-              "Threader's scheduling feature is a lifesaver. It allows me to plan my content calendar efficiently, ensuring I never miss posting on the optimal days and times. Fantastic tool for social media managers.",
-            role: "Social Media Manager",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b3",
-            name: "Mia",
-            review:
-              "The analytics provided by Threader are invaluable. They've given me insights into what my audience loves, helping me double my engagement rate in just a few months.",
-            role: "Digital Marketer",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b4",
-            name: "Noah",
-            review:
-              "I was skeptical about AI-generated content, but Threader changed my mind. The content feels personal and has significantly increased my interaction rates.",
-            role: "Blogger",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b5",
-            name: "Isabella",
-            review:
-              "Threader's user interface is incredibly user-friendly. I was able to onboard my team in no time, and we've seen a marked improvement in our social media performance.",
-            role: "Team Leader",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b6",
-            name: "Oliver",
-            review:
-              "Auto-reposting with Threader is a feature I didn't know I needed. It's great for getting more mileage out of your best content without any extra effort.",
-            role: "Freelancer",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b7",
-            name: "Sophia",
-            review:
-              "Joining the Threader community has opened up networking opportunities with fellow content creators. It's more than just a tool; it's a platform for growth.",
-            role: "Influencer",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b8",
-            name: "Elijah",
-            review:
-              "The calendar view in Threader helps me visualize my content strategy for the entire month. It's been a game changer for my planning process.",
-            role: "Strategist",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b9",
-            name: "Charlotte",
-            review:
-              "I appreciate the flexibility in Threader's pricing plans. It's accessible for creators at any stage of their journey, from beginners to established influencers.",
-            role: "Entrepreneur",
-          },
-          {
-            image: "https://i.pravatar.cc/300?u=b10",
-            name: "James",
-            review:
-              "The customer support team at Threader is fantastic. They've been quick to respond and helpful with any questions I've had. Great service overall.",
-            role: "Customer",
-          },
-        ]}
+      <CtaSection
+        title="Commencez votre suivi des aujourd'hui"
+        description="Rejoignez les utilisateurs qui prennent en main leur sante mentale avec MoodTrace."
+        ctaText="Creer mon compte gratuit"
+        ctaHref="/signin"
       />
-
-      <EmailFormSection />
 
       <SectionDivider />
 

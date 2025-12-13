@@ -30,7 +30,11 @@ async function RoutePage(props: PageProps<"/orgs/[orgSlug]/settings/members">) {
 
   const members = await getOrgsMembers(org.id);
 
-  const maxMembers = getPlanLimits(org.subscription?.plan).members;
+  // MoodTrace: caregiverAccess determines if aidant role is allowed
+  // 0 = no caregiver, 1 = one caregiver allowed (Pro plan)
+  const planLimits = getPlanLimits(org.subscription?.plan);
+  // Max 2 members: patient + optional caregiver (if Pro)
+  const maxMembers = planLimits.caregiverAccess > 0 ? 2 : 1;
 
   const invitations = await prisma.invitation.findMany({
     where: {

@@ -195,8 +195,8 @@ async function BillingPaymentPage() {
       customer: org.subscription.stripeCustomerId,
       limit: 12,
     }),
-    getStripeOrThrow().invoices
-      .createPreview({
+    getStripeOrThrow()
+      .invoices.createPreview({
         customer: org.subscription.stripeCustomerId,
       })
       .catch(() => null),

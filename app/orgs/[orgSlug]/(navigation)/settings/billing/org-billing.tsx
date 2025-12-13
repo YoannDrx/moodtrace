@@ -88,41 +88,50 @@ export function OrgBilling(props: {
 
   const fakeUsage = useMemo(
     () => ({
-      projects: Math.floor(planLimits.projects * 0.6),
-      storage: Math.floor(planLimits.storage * 0.45),
-      members: Math.floor(planLimits.members * 0.8),
+      moodEntries: Math.floor(
+        (planLimits.moodEntriesPerMonth === -1
+          ? 31
+          : planLimits.moodEntriesPerMonth) * 0.6,
+      ),
+      medications: Math.floor(
+        (planLimits.medications === -1 ? 10 : planLimits.medications) * 0.45,
+      ),
+      exports: Math.floor(
+        (planLimits.exportPerMonth === -1 ? 5 : planLimits.exportPerMonth) *
+          0.8,
+      ),
     }),
     [planLimits],
   );
 
   const usageChartData = useMemo(
     () => [
-      { month: "Jan", projects: 2, storage: 3, members: 1 },
-      { month: "Feb", projects: 3, storage: 4, members: 2 },
-      { month: "Mar", projects: 4, storage: 5, members: 2 },
-      { month: "Apr", projects: 5, storage: 6, members: 3 },
-      { month: "May", projects: 5, storage: 7, members: 3 },
+      { month: "Jan", moodEntries: 15, medications: 2, exports: 0 },
+      { month: "Fev", moodEntries: 20, medications: 2, exports: 1 },
+      { month: "Mar", moodEntries: 25, medications: 3, exports: 0 },
+      { month: "Avr", moodEntries: 28, medications: 3, exports: 1 },
+      { month: "Mai", moodEntries: 30, medications: 3, exports: 1 },
       {
-        month: "Jun",
-        projects: fakeUsage.projects,
-        storage: fakeUsage.storage,
-        members: fakeUsage.members,
+        month: "Juin",
+        moodEntries: fakeUsage.moodEntries,
+        medications: fakeUsage.medications,
+        exports: fakeUsage.exports,
       },
     ],
     [fakeUsage],
   );
 
   const usageChartConfig = {
-    projects: {
-      label: "Projects",
+    moodEntries: {
+      label: "Entrees d'humeur",
       color: "var(--chart-1)",
     },
-    storage: {
-      label: "Storage (GB)",
+    medications: {
+      label: "Medicaments",
       color: "var(--chart-2)",
     },
-    members: {
-      label: "Members",
+    exports: {
+      label: "Exports PDF",
       color: "var(--chart-3)",
     },
   } satisfies ChartConfig;

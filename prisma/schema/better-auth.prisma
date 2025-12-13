@@ -19,6 +19,13 @@ model User {
   members     Member[]
   invitations Invitation[]
 
+  // MoodTrace relations
+  moodEntries           MoodEntry[]
+  medications           Medication[]
+  medicationIntakes     MedicationIntake[]
+  caregiverObservations CaregiverObservation[] @relation("CaregiverObservations")
+  patientObservations   CaregiverObservation[] @relation("PatientObservations")
+
   role       String?
   banned     Boolean?
   banReason  String?
@@ -91,6 +98,11 @@ model Organization {
   invitations      Invitation[]
   subscription     Subscription?
   email            String?
+
+  // MoodTrace relations
+  moodEntries            MoodEntry[]
+  medications            Medication[]
+  caregiverObservations  CaregiverObservation[]
 
   @@unique([slug])
   @@map("organization")

@@ -27,10 +27,11 @@ export const openStripePortalAction = orgAction
       );
     }
 
-    const stripeBilling = await getStripeOrThrow().billingPortal.sessions.create({
-      customer: stripeCustomerId,
-      return_url: `${getServerUrl()}/orgs/${org.slug}/settings/billing`,
-    });
+    const stripeBilling =
+      await getStripeOrThrow().billingPortal.sessions.create({
+        customer: stripeCustomerId,
+        return_url: `${getServerUrl()}/orgs/${org.slug}/settings/billing`,
+      });
 
     if (!stripeBilling.url) {
       throw new ActionError("Failed to create stripe billing portal session");
@@ -75,10 +76,11 @@ export const cancelOrgSubscriptionAction = orgAction
     }
 
     // Create billing portal session which allows the user to cancel
-    const stripeBilling = await getStripeOrThrow().billingPortal.sessions.create({
-      customer: stripeCustomerId,
-      return_url: `${getServerUrl()}${returnUrl}`,
-    });
+    const stripeBilling =
+      await getStripeOrThrow().billingPortal.sessions.create({
+        customer: stripeCustomerId,
+        return_url: `${getServerUrl()}${returnUrl}`,
+      });
 
     if (!stripeBilling.url) {
       throw new ActionError("Failed to create stripe billing portal session");

@@ -1,19 +1,31 @@
 import type { Subscription } from "@/generated/prisma";
 import { logger } from "@/lib/logger";
 import {
-  Clock,
-  FolderArchive,
-  HardDrive,
-  HeadphonesIcon,
+  Calendar,
+  FileText,
+  Heart,
+  LineChart,
+  Pill,
   Shield,
   Users,
   Zap,
 } from "lucide-react";
 
+/**
+ * MoodTrace Plan Limits
+ *
+ * - moodEntriesPerMonth: Number of mood entries per month (-1 = unlimited)
+ * - medications: Number of medications to track (-1 = unlimited)
+ * - exportPerMonth: Number of PDF exports per month (-1 = unlimited)
+ * - caregiverAccess: Can add caregiver role
+ * - correlations: Access to correlations & insights
+ */
 const DEFAULT_LIMIT = {
-  projects: 5,
-  storage: 10,
-  members: 3,
+  moodEntriesPerMonth: 31,
+  medications: 3,
+  exportPerMonth: 1,
+  caregiverAccess: 0,
+  correlations: 0,
 };
 
 export type PlanLimit = typeof DEFAULT_LIMIT;
@@ -63,69 +75,54 @@ export type AppAuthPlan = {
   limits: PlanLimit;
 };
 
+/**
+ * MoodTrace Plans
+ *
+ * - Gratuit: Basic mood tracking for getting started
+ * - Pro: Full access with caregiver role, correlations, unlimited exports
+ */
 export const AUTH_PLANS: AppAuthPlan[] = [
   {
-    name: "free",
-    description:
-      "Perfect for individuals and small projects with essential features",
+    name: "gratuit",
+    description: "Parfait pour commencer le suivi de votre humeur",
     limits: DEFAULT_LIMIT,
     price: 0,
-    currency: "USD",
+    currency: "EUR",
     yearlyPrice: 0,
   },
   {
     name: "pro",
     isPopular: true,
-    description: "Ideal for growing teams with advanced collaboration needs",
+    description:
+      "Suivi complet avec insights, correlations et role aidant integre",
     priceId: process.env.STRIPE_PRO_PLAN_ID ?? "",
     annualDiscountPriceId: process.env.STRIPE_PRO_YEARLY_PLAN_ID ?? "",
     limits: {
-      projects: 20,
-      storage: 50,
-      members: 10,
+      moodEntriesPerMonth: -1, // Unlimited
+      medications: -1, // Unlimited
+      exportPerMonth: -1, // Unlimited
+      caregiverAccess: 1, // Enabled
+      correlations: 1, // Enabled
     },
     freeTrial: {
       days: 14,
       onTrialStart: async (subscription) => {
-        // Send a welcome email to the user
-        logger.debug(`Welcome email sent to ${subscription}`);
+        logger.debug(`Trial started for ${subscription.id}`);
       },
       onTrialExpired: async (subscription) => {
-        // Handle trial expiration
-        logger.debug(`Trial expired for ${subscription}`);
+        logger.debug(`Trial expired for ${subscription.id}`);
       },
-      onTrialEnd: async (subscription) => {
-        // Handle trial end
-        logger.debug(`Trial ended for ${subscription}`);
+      onTrialEnd: async ({ subscription }) => {
+        logger.debug(`Trial ended for ${subscription.id}`);
       },
     },
-
-    price: 49,
-    yearlyPrice: 400,
-    currency: "USD",
-  },
-  {
-    name: "ultra",
-    isPopular: false,
-    description:
-      "Enterprise-grade solution for large teams with complex requirements",
-    priceId: process.env.STRIPE_ULTRA_PLAN_ID ?? "",
-    annualDiscountPriceId: process.env.STRIPE_ULTRA_YEARLY_PLAN_ID ?? "",
-    limits: {
-      projects: 100,
-      storage: 1000,
-      members: 100,
-    },
-    freeTrial: {
-      days: 14,
-    },
-    price: 100,
-    yearlyPrice: 1000,
-    currency: "USD",
+    price: 4.99,
+    yearlyPrice: 49.99,
+    currency: "EUR",
   },
 ];
 
-// Limits transformation object
+// Limits transformation object for MoodTrace
 export const LIMITS_CONFIG: Record<
   keyof PlanLimit,
   {
@@ -134,62 +131,73 @@ export const LIMITS_CONFIG: Record<
     description: string;
   }
 > = {
-  projects: {
-    icon: FolderArchive,
+  moodEntriesPerMonth: {
+    icon: Heart,
     getLabel: (value: number) =>
-      `${value} ${value === 1 ? "Project" : "Projects"}`,
-    description: "Create and manage projects",
+      value === -1 ? "Entrees illimitees" : `${value} entrees/mois`,
+    description: "Enregistrez votre humeur quotidiennement",
   },
-  storage: {
-    icon: HardDrive,
-    getLabel: (value: number) => `${value} GB Storage`,
-    description: "Cloud storage for your files",
+  medications: {
+    icon: Pill,
+    getLabel: (value: number) =>
+      value === -1 ? "Medicaments illimites" : `${value} medicaments`,
+    description: "Suivez vos traitements et leur adherence",
   },
-  members: {
+  exportPerMonth: {
+    icon: FileText,
+    getLabel: (value: number) =>
+      value === -1 ? "Exports illimites" : `${value} export PDF/mois`,
+    description: "Generez des rapports pour votre medecin",
+  },
+  caregiverAccess: {
     icon: Users,
     getLabel: (value: number) =>
-      `${value} Team ${value === 1 ? "Member" : "Members"}`,
-    description: "Invite team members to collaborate",
+      value > 0 ? "Role aidant" : "Role aidant (Pro)",
+    description: "Permettez a un proche de suivre votre evolution",
+  },
+  correlations: {
+    icon: LineChart,
+    getLabel: (value: number) =>
+      value > 0 ? "Correlations & insights" : "Correlations (Pro)",
+    description: "Analysez les liens entre medication et humeur",
   },
 };
 
 // Additional features by plan
 export const ADDITIONAL_FEATURES = {
-  free: [
+  gratuit: [
     {
       icon: Shield,
-      label: "Basic Security",
-      description: "Standard protection for your data",
+      label: "Donnees securisees",
+      description: "Chiffrement et confidentialite garantis",
+    },
+    {
+      icon: Calendar,
+      label: "Dashboard 7 jours",
+      description: "Visualisez vos tendances sur une semaine",
     },
   ],
   pro: [
     {
       icon: Zap,
-      label: "Priority Support",
-      description: "Get help when you need it most",
+      label: "Support prioritaire",
+      description: "Aide rapide quand vous en avez besoin",
     },
     {
-      icon: HeadphonesIcon,
-      label: "24/7 Customer Service",
-      description: "Round-the-clock assistance",
+      icon: LineChart,
+      label: "Dashboard 30 jours",
+      description: "Tendances et analyses sur un mois complet",
     },
     {
-      icon: Clock,
-      label: "Advanced Analytics",
-      description: "Detailed insights and reporting",
-    },
-  ],
-  ultra: [
-    {
-      icon: Zap,
-      label: "Priority Support",
-      description: "Get help when you need it most",
+      icon: Users,
+      label: "Role aidant",
+      description: "Un proche peut ajouter des observations",
     },
   ],
 };
 
 export const getPlanLimits = (
-  plan = "free",
+  plan = "gratuit",
   overrideLimits?: OverrideLimits | null,
 ): PlanLimit => {
   const planLimits = AUTH_PLANS.find((p) => p.name === plan)?.limits;

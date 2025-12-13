@@ -2,11 +2,15 @@ import type { NavigationGroup } from "@/features/navigation/navigation.type";
 import type { AuthRole } from "@/lib/auth/auth-permissions";
 import { isInRoles } from "@/lib/organizations/is-in-roles";
 import {
+  BarChart3,
   CreditCard,
+  FileText,
+  Heart,
+  HeartHandshake,
   Home,
+  Pill,
   Settings,
   TriangleAlert,
-  User,
   User2,
 } from "lucide-react";
 
@@ -51,9 +55,29 @@ export const ORGANIZATION_LINKS: NavigationGroup[] = [
         label: "Dashboard",
       },
       {
-        href: `${ORGANIZATION_PATH}/users`,
-        Icon: User,
-        label: "Users",
+        href: `${ORGANIZATION_PATH}/mood`,
+        Icon: Heart,
+        label: "Humeur",
+      },
+      {
+        href: `${ORGANIZATION_PATH}/medications`,
+        Icon: Pill,
+        label: "Médicaments",
+      },
+      {
+        href: `${ORGANIZATION_PATH}/trends`,
+        Icon: BarChart3,
+        label: "Tendances",
+      },
+      {
+        href: `${ORGANIZATION_PATH}/export`,
+        Icon: FileText,
+        label: "Export",
+      },
+      {
+        href: `${ORGANIZATION_PATH}/crisis`,
+        Icon: HeartHandshake,
+        label: "Ressources de crise",
       },
     ],
   },

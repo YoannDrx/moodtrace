@@ -223,12 +223,12 @@ Ouvrir le marché B2B avec cliniciens et organisations.
 
 ## Risques & Mitigations
 
-| Risque | Impact | Mitigation |
-|--------|--------|------------|
-| Faible rétention | Élevé | Focus UX 30 sec/jour, rappels non-culpabilisants |
-| Régulation YMYL | Élevé | Disclaimers clairs, pas de conseils médicaux |
-| Concurrence Bearable | Moyen | Focus médication + aidant comme différenciateurs |
-| Complexité B2B | Moyen | Reporter Phase 3 jusqu'à PMF B2C validé |
+| Risque               | Impact | Mitigation                                       |
+| -------------------- | ------ | ------------------------------------------------ |
+| Faible rétention     | Élevé  | Focus UX 30 sec/jour, rappels non-culpabilisants |
+| Régulation YMYL      | Élevé  | Disclaimers clairs, pas de conseils médicaux     |
+| Concurrence Bearable | Moyen  | Focus médication + aidant comme différenciateurs |
+| Complexité B2B       | Moyen  | Reporter Phase 3 jusqu'à PMF B2C validé          |
 
 ---
 
@@ -243,4 +243,4 @@ Ouvrir le marché B2B avec cliniciens et organisations.
 
 ---
 
-*Dernière mise à jour : Décembre 2024*
+_Dernière mise à jour : Décembre 2024_

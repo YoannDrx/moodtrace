@@ -287,9 +287,91 @@ model CaregiverObservation {
 
 ### Styling preferences
 
-- Use the shared typography components in `@src/components/ui/typography.tsx` for paragraphs and headings (instead of creating custom `p`, `h1`, `h2`, etc.).
+- Use the shared typography components in `@src/components/nowts/typography.tsx` for paragraphs and headings (instead of creating custom `p`, `h1`, `h2`, etc.).
 - For spacing, prefer utility layouts like `flex flex-col gap-4` for vertical spacing and `flex gap-4` for horizontal spacing (instead of `space-y-4`).
 - Prefer the card container `@src/components/ui/card.tsx` for styled wrappers rather than adding custom styles directly to `<div>` elements.
+
+## Design System
+
+MoodTrace utilise un design system centralisé avec des tokens réutilisables.
+
+### Design Tokens
+
+Tous les tokens sont centralisés dans `src/lib/design-tokens.ts` :
+
+```typescript
+import { colors, typography, spacing, getMoodColor } from "@/lib/design-tokens";
+
+// Couleurs de marque
+colors.brand.primary.DEFAULT; // "#2A8FA8" - Teal
+colors.brand.secondary.DEFAULT; // "#48A878" - Vert doux
+
+// Couleurs d'humeur (1-10)
+getMoodColor(7); // Retourne la couleur pour mood 7
+```
+
+### Palette de Couleurs
+
+| Token                    | Valeur              | Usage                      |
+| ------------------------ | ------------------- | -------------------------- |
+| `--primary`              | Teal #2A8FA8        | Actions principales, liens |
+| `--secondary`            | Vert #48A878        | Succès, progression        |
+| `--destructive`          | Rouge               | Erreurs, alertes crise     |
+| `--mood-1` à `--mood-10` | Gradient rouge→cyan | Indicateurs d'humeur       |
+
+### Thèmes
+
+- **Light** (défaut) : Fond blanc chaud `#F8F7F3`
+- **Dark** : Fond gris doux `#1A1A1A` (non agressif)
+
+### Composants MoodTrace Spécifiques
+
+| Composant             | Fichier                                 | Usage                  |
+| --------------------- | --------------------------------------- | ---------------------- |
+| `MoodIndicator`       | `@/components/nowts/mood-indicator.tsx` | Affichage humeur 1-10  |
+| `MoodScale`           | `@/components/nowts/mood-indicator.tsx` | Échelle de sélection   |
+| `CrisisCard`          | `@/components/nowts/crisis-card.tsx`    | Ressources de crise    |
+| `CrisisResourcesGrid` | `@/components/nowts/crisis-card.tsx`    | Grille ressources YMYL |
+| `MoodTraceLogo`       | `@/components/svg/moodtrace-logo.tsx`   | Logo avec texte        |
+| `Typography`          | `@/components/nowts/typography.tsx`     | Textes avec variants   |
+
+### Typography Variants
+
+```tsx
+import { Typography } from "@/components/nowts/typography";
+
+<Typography variant="display">Titre hero</Typography>
+<Typography variant="h1">Titre principal</Typography>
+<Typography variant="h2">Sous-titre</Typography>
+<Typography variant="h3">Section</Typography>
+<Typography variant="h4">Sous-section</Typography>
+<Typography variant="lead">Texte d'accroche</Typography>
+<Typography variant="large">Texte important</Typography>
+<Typography variant="small">Texte petit</Typography>
+<Typography variant="muted">Texte secondaire</Typography>
+<Typography variant="caption">Légende</Typography>
+```
+
+### MoodIndicator Usage
+
+```tsx
+import { MoodIndicator, MoodScale } from "@/components/nowts/mood-indicator";
+
+// Indicateur simple
+<MoodIndicator value={7} size="md" />
+
+// Échelle interactive
+<MoodScale value={7} onChange={(v) => setMood(v)} />
+```
+
+### Conventions Design
+
+- **Pas d'emojis** : Utiliser Lucide Icons exclusivement
+- **Pas de gradients** : Sauf demande explicite
+- **Mobile-first** : Toutes les sections responsive
+- **Accessibilité** : Contraste WCAG AA minimum
+- **OKLch** : Utiliser le color space OKLch pour les couleurs CSS
+- **CVA** : Utiliser class-variance-authority pour les variants
 
 ### State Management
 
@@ -396,11 +478,26 @@ const form = useForm({
 
 ## Important Files
 
+### Core Configuration
+
+- `src/site-config.ts` - Site configuration (branding, URLs, crisis resources)
 - `src/lib/auth.ts` - Authentication configuration
+- `src/lib/auth/stripe/auth-plans.ts` - Plans Stripe (gratuit, pro) et limites
+
+### Design System
+
+- `src/lib/design-tokens.ts` - Tokens centralisés (couleurs, typography, spacing)
+- `app/globals.css` - Variables CSS et thèmes (light/dark)
+- `src/components/nowts/typography.tsx` - Composant Typography avec variants
+- `src/components/nowts/mood-indicator.tsx` - Indicateurs d'humeur (1-10)
+- `src/components/nowts/crisis-card.tsx` - Cartes ressources de crise
+- `src/components/svg/moodtrace-logo.tsx` - Logo MoodTrace
+
+### Application Logic
+
 - `src/features/dialog-manager/` - Global dialog system
 - `src/lib/actions/actions-utils.ts` - Server action utilities
 - `src/features/form/tanstack-form.tsx` - TanStack Form components (useForm, Form, field components)
-- `src/site-config.ts` - Site configuration
 - `src/lib/actions/safe-actions.ts` - All Server Action SHOULD use this logic
 - `src/lib/zod-route.ts` - All Next.js route (inside the folder `/app/api` and name `route.ts`) SHOULD use this logic
 

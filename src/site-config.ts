@@ -1,22 +1,24 @@
 export const SiteConfig = {
-  title: "NOW.TS",
-  description: "Collect and showcase powerful video and text testimonials",
-  prodUrl: "https://demo.nowts.app",
-  appId: "nowts",
-  domain: "demo.nowts.app",
-  appIcon: "/images/icon.png",
+  title: "MoodTrace",
+  description:
+    "Medication-aware mood tracker - Suivez votre humeur et optimisez votre traitement",
+  prodUrl: "https://moodtrace.app",
+  appId: "moodtrace",
+  domain: "moodtrace.app",
+  appIcon: "/images/moodtrace-icon.png",
   company: {
-    name: "NOW.TS LLC",
-    address: "421 Rue de Paris, France", // Remove if not needed
+    name: "MoodTrace",
+    address: "Paris, France",
   },
   brand: {
-    primary: "#007291", // You can adjust this to your brand color
+    primary: "#2A8FA8", // Teal - Trust, calm, medical
+    secondary: "#48A878", // Green - Healing, progress
   },
   team: {
-    image: "https://melvynx.com/images/me/twitter-en.jpg",
-    website: "https://melvynx.com",
-    twitter: "https://twitter.com/melvyn_me",
-    name: "Melvynx",
+    image: "/images/team.jpg",
+    website: "https://moodtrace.app",
+    twitter: "https://twitter.com/moodtrace",
+    name: "MoodTrace Team",
   },
   features: {
     /**
@@ -31,5 +33,56 @@ export const SiteConfig = {
      * The logic is located in middleware.ts
      */
     enableLandingRedirection: true as boolean,
+  },
+  /**
+   * MoodTrace specific configuration
+   */
+  moodtrace: {
+    /** Mood scale configuration */
+    moodScale: {
+      min: 1,
+      max: 10,
+    },
+    /** Default language */
+    defaultLanguage: "fr" as const,
+    /** Supported languages */
+    supportedLanguages: ["fr", "en"] as const,
+    /** Crisis resources (France) */
+    crisisResources: [
+      {
+        name: "SOS Amitie",
+        phone: "09 72 39 40 50",
+        available: "24h/24, 7j/7",
+      },
+      {
+        name: "Fil Sante Jeunes",
+        phone: "0 800 235 236",
+        available: "9h-23h",
+      },
+      {
+        name: "Urgences (SAMU)",
+        phone: "15",
+        available: "24h/24, 7j/7",
+      },
+    ],
+  },
+  /**
+   * SEO & Social metadata
+   */
+  seo: {
+    keywords: [
+      "mood tracker",
+      "medication tracking",
+      "mental health",
+      "bipolar",
+      "depression",
+      "ADHD",
+      "anxiety",
+      "suivi humeur",
+      "suivi medicaments",
+      "sante mentale",
+    ],
+    ogImage: "/images/og-image.png",
+    twitterHandle: "@moodtrace",
   },
 };

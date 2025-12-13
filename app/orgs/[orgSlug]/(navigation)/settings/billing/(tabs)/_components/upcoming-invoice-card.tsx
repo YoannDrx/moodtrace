@@ -33,8 +33,8 @@ export async function UpcomingInvoiceCard({ org }: UpcomingInvoiceCardProps) {
     return null;
   }
 
-  const upcomingInvoice = await getStripeOrThrow().invoices
-    .createPreview({
+  const upcomingInvoice = await getStripeOrThrow()
+    .invoices.createPreview({
       customer: org.subscription.stripeCustomerId,
     })
     .catch(() => null);

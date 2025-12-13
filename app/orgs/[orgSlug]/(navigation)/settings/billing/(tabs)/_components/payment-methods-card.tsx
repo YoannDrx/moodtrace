@@ -20,8 +20,8 @@ export async function PaymentMethodsCard({ org }: PaymentMethodsCardProps) {
     return null;
   }
 
-  const paymentMethods = await getStripeOrThrow().paymentMethods
-    .list({
+  const paymentMethods = await getStripeOrThrow()
+    .paymentMethods.list({
       customer: org.subscription.stripeCustomerId,
       type: "card",
     })

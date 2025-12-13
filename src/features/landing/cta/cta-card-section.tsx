@@ -6,51 +6,50 @@ import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { SectionLayout } from "../section-layout";
 
-export function CTASectionCard() {
+export type CTASectionCardProps = {
+  title?: string;
+  description?: string;
+  ctaText?: string;
+  ctaHref?: string;
+  secondaryCtaText?: string;
+  secondaryCtaHref?: string;
+};
+
+export function CTASectionCard({
+  title = "Pret a mieux comprendre votre sante mentale ?",
+  description = "Commencez gratuitement et decouvrez comment MoodTrace peut vous aider.",
+  ctaText = "Commencer maintenant",
+  ctaHref = "/signin",
+  secondaryCtaText,
+  secondaryCtaHref,
+}: CTASectionCardProps) {
   return (
     <SectionLayout>
-      <Card className="relative isolate overflow-hidden py-24 text-center shadow-2xl lg:rounded-3xl">
+      <Card className="bg-primary/5 border-primary/20 relative isolate overflow-hidden py-16 text-center shadow-lg lg:rounded-3xl lg:py-24">
         <Typography
           as="h2"
-          className="text-4xl font-semibold tracking-tight text-balance text-white sm:text-5xl"
+          className="text-foreground text-3xl font-semibold tracking-tight text-balance sm:text-4xl"
         >
-          Boost your productivity today
+          {title}
         </Typography>
-        <Typography className="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-gray-300">
-          Create an account and start posting today.
+        <Typography className="text-muted-foreground mx-auto mt-6 max-w-xl text-lg/8 text-pretty">
+          {description}
         </Typography>
-        <div className="mt-10 flex items-center justify-center gap-x-6">
-          <Link href="#pricing" className={buttonVariants({ size: "lg" })}>
-            Get started
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+          <Link href={ctaHref} className={buttonVariants({ size: "lg" })}>
+            {ctaText}
           </Link>
 
-          <Link
-            href="#"
-            className={buttonVariants({ size: "lg", variant: "outline" })}
-          >
-            Learn more
-            <span aria-hidden="true">→</span>
-          </Link>
+          {secondaryCtaText && secondaryCtaHref && (
+            <Link
+              href={secondaryCtaHref}
+              className={buttonVariants({ size: "lg", variant: "outline" })}
+            >
+              {secondaryCtaText}
+              <span aria-hidden="true">→</span>
+            </Link>
+          )}
         </div>
-        <svg
-          viewBox="0 0 1024 1024"
-          aria-hidden="true"
-          className="absolute top-1/2 left-1/2 -z-10 size-256 -translate-x-1/2 mask-[radial-gradient(closest-side,white,transparent)]"
-        >
-          <circle
-            r={512}
-            cx={512}
-            cy={512}
-            fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)"
-            fillOpacity="0.7"
-          />
-          <defs>
-            <radialGradient id="827591b1-ce8c-4110-b064-7cb85a0b1217">
-              <stop stopColor="#7775D6" />
-              <stop offset={1} stopColor="#E935C1" />
-            </radialGradient>
-          </defs>
-        </svg>
       </Card>
     </SectionLayout>
   );

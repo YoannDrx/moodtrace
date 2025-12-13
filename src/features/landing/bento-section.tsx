@@ -1,18 +1,9 @@
 "use client";
 
 import { BentoGrid, BentoGridItem } from "@/components/nowts/bentoo";
-import { Loader } from "@/components/nowts/loader";
 import { Typography } from "@/components/nowts/typography";
-import { Alert, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
-import {
-  BarChart3,
-  Calendar,
-  CalendarCheck,
-  CheckCircle,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { FileText, Heart, LineChart, Pill, Users } from "lucide-react";
 import type { Variants } from "motion/react";
 import { motion } from "motion/react";
 import { SectionLayout } from "./section-layout";
@@ -36,9 +27,52 @@ export function BentoGridSection() {
   );
 }
 
-const Skeleton1 = () => {
+const MoodTrackerSkeleton = () => {
   const variants: Variants = {
-    initial: { opacity: 0 },
+    initial: { scale: 1 },
+    animate: { scale: 1.05 },
+  };
+
+  return (
+    <motion.div
+      initial="initial"
+      whileHover="animate"
+      className="flex h-full flex-col gap-3"
+    >
+      <div className="text-muted-foreground mb-2 text-sm">
+        Comment vous sentez-vous ?
+      </div>
+      <div className="flex items-center justify-between gap-1">
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((mood) => (
+          <motion.div
+            key={mood}
+            variants={mood === 7 ? variants : undefined}
+            className={cn(
+              "flex size-8 items-center justify-center rounded-full text-xs font-medium",
+              mood === 7
+                ? "bg-mood-7 text-white shadow-lg"
+                : "bg-muted text-muted-foreground",
+            )}
+          >
+            {mood}
+          </motion.div>
+        ))}
+      </div>
+      <div className="bg-background mt-2 rounded-lg border p-3">
+        <Typography variant="caption" className="text-muted-foreground">
+          Note du jour
+        </Typography>
+        <Typography variant="small" className="text-foreground mt-1">
+          Bonne journee, energie stable apres le changement de dosage.
+        </Typography>
+      </div>
+    </motion.div>
+  );
+};
+
+const MedicationSkeleton = () => {
+  const variants: Variants = {
+    initial: { opacity: 0.5 },
     animate: { opacity: 1 },
   };
 
@@ -48,217 +82,131 @@ const Skeleton1 = () => {
       whileHover="animate"
       className="flex h-full flex-col gap-2"
     >
-      <motion.div className="border-border bg-background flex flex-row items-start gap-2 rounded-2xl border p-3">
-        <img
-          alt="avatar"
-          src="https://melvynx.com/_next/image?url=%2Fimages%2Fmy-face.png&w=828&q=75"
-          className="size-6 shrink-0 rounded-full"
-        />
-        <div>
-          <p className="text-xs text-neutral-500">
-            Create a Thread to announce Now.ts
-          </p>
-        </div>
-      </motion.div>
-      <motion.div
-        variants={variants}
-        className="border-border bg-background flex flex-row items-start justify-end gap-2 rounded-2xl border p-3"
-      >
-        <p className="text-xs text-neutral-500">
-          Today I announced my new project, Now.TS, the perfect way to create
-          professional Next.js application in days.
-        </p>
-        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-pink-500 to-violet-500" />
-      </motion.div>
+      {[
+        { name: "Lamictal", dosage: "200mg", time: "08:00", taken: true },
+        { name: "Lithium", dosage: "400mg", time: "20:00", taken: true },
+        { name: "Seroquel", dosage: "50mg", time: "22:00", taken: false },
+      ].map((med, i) => (
+        <motion.div
+          key={i}
+          variants={variants}
+          className="bg-background flex items-center justify-between rounded-lg border p-3"
+        >
+          <div>
+            <Typography variant="small" className="text-foreground font-medium">
+              {med.name}
+            </Typography>
+            <Typography variant="caption" className="text-muted-foreground">
+              {med.dosage} - {med.time}
+            </Typography>
+          </div>
+          <div
+            className={cn(
+              "size-6 rounded-full",
+              med.taken ? "bg-secondary" : "bg-muted",
+            )}
+          />
+        </motion.div>
+      ))}
     </motion.div>
   );
 };
 
-const Skeleton2 = () => {
-  const variants: Variants = {
-    initial: { opacity: 0, y: -10 },
-    animate: { opacity: 1, y: 0 },
-  };
+const CorrelationSkeleton = () => {
   return (
     <motion.div
       initial="initial"
       whileHover="animate"
       className="flex h-full flex-col gap-2"
     >
-      <motion.div>
-        <Alert variant="default" className="">
-          <Loader size={20} />
-          <AlertTitle>Schedule your threads...</AlertTitle>
-        </Alert>
-      </motion.div>
-      <motion.div variants={variants}>
-        <Alert variant="success" className="">
-          <CheckCircle size={20} />
-          <AlertTitle>Your threads are now scheduled for 7:00 AM</AlertTitle>
-        </Alert>
-      </motion.div>
-    </motion.div>
-  );
-};
-const Skeleton3 = () => {
-  const variants = {
-    initial: {
-      backgroundPosition: "0 50%",
-    },
-    animate: {
-      backgroundPosition: ["0, 50%", "100% 50%", "0 50%"],
-    },
-  };
-  return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      variants={variants}
-      transition={{
-        duration: 5,
-        repeat: Infinity,
-        repeatType: "reverse",
-      }}
-      className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex size-full min-h-24 flex-1 flex-col space-y-2 rounded-lg"
-      style={{
-        background:
-          "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)",
-        backgroundSize: "400% 400%",
-      }}
-    >
-      <motion.div className="size-full rounded-lg"></motion.div>
-    </motion.div>
-  );
-};
-const Skeleton4 = () => {
-  const first = {
-    initial: {
-      x: 20,
-      rotate: -5,
-    },
-    hover: {
-      x: 0,
-      rotate: 0,
-    },
-  };
-  const second = {
-    initial: {
-      x: -20,
-      rotate: 5,
-    },
-    hover: {
-      x: 0,
-      rotate: 0,
-    },
-  };
-  return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      whileHover="hover"
-      className="flex flex-1 flex-row gap-4"
-    >
-      <motion.div
-        variants={first}
-        className="border-border bg-background flex h-full w-1/3 flex-col items-center justify-center rounded-2xl border p-4"
-      >
-        <Typography variant="large">+123 followers</Typography>
-        <Typography variant={"muted"}>In the last 30 days</Typography>
-        <Typography variant={"muted"} className="text-green-500">
-          +12%
+      <div className="flex flex-1 items-end gap-1">
+        {[4, 5, 6, 5, 7, 8, 7, 8, 9, 8].map((value, i) => (
+          <motion.div
+            key={i}
+            className="bg-primary/60 flex-1 rounded-t"
+            style={{ height: `${value * 10}%` }}
+            initial={{ scaleY: 0.8 }}
+            whileHover={{ scaleY: 1 }}
+          />
+        ))}
+      </div>
+      <div className="bg-background rounded-lg border p-3">
+        <Typography variant="caption" className="text-secondary">
+          Correlation detectee
         </Typography>
-      </motion.div>
-      <motion.div className="border-border bg-background flex h-full w-1/3 flex-col items-center justify-center rounded-2xl border p-4">
-        <Typography variant="large">+1.4 M Views</Typography>
-        <Typography variant={"muted"}>In the last 30 days</Typography>
-        <Typography variant={"muted"} className="text-green-500">
-          +21%
+        <Typography variant="small" className="text-foreground">
+          +0.72 entre sommeil et humeur
         </Typography>
-      </motion.div>
-      <motion.div
-        variants={second}
-        className="border-border bg-background flex h-full w-1/3 flex-col items-center justify-center rounded-2xl border p-4"
-      >
-        <Typography variant="large">1244 likes</Typography>
-        <Typography variant="large">766 replis</Typography>
-        <Typography variant={"muted"}>In the last 30 days</Typography>
-        <Typography variant={"muted"} className="text-green-500">
-          +12%
-        </Typography>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };
 
-const Skeleton5 = () => {
-  const variants = {
-    initial: {
-      x: 0,
-    },
-    animate: {
-      x: 10,
-      rotate: 5,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-  const variantsSecond = {
-    initial: {
-      x: 0,
-    },
-    animate: {
-      x: -10,
-      rotate: -5,
-      transition: {
-        duration: 0.2,
-      },
-    },
+const CaregiverSkeleton = () => {
+  const variants: Variants = {
+    initial: { x: 0 },
+    animate: { x: 5 },
   };
 
   return (
     <motion.div
       initial="initial"
       whileHover="animate"
-      className="flex flex-col gap-2"
+      className="flex h-full flex-col gap-3"
     >
       <motion.div
         variants={variants}
-        className="border-border bg-background flex flex-row items-start gap-2 rounded-2xl border p-3"
+        className="bg-background flex items-start gap-3 rounded-lg border p-3"
       >
-        <img
-          src="https://melvynx.com/_next/image?url=%2Fimages%2Fmy-face.png&w=828&q=75"
-          alt="avatar"
-          height="100"
-          width="100"
-          className="size-10 rounded-full"
-        />
-        <p className="text-xs text-neutral-500">
-          What I need to do to get more followers ?
-        </p>
-      </motion.div>
-      <motion.div
-        variants={variantsSecond}
-        className="border-border bg-background flex flex-row items-start justify-end gap-2 rounded-2xl border p-3"
-      >
-        <div>
-          <p className="text-xs text-neutral-500">Searching...</p>
-          <motion.p
-            className="text-xs text-neutral-500"
-            variants={{
-              initial: {
-                opacity: 0,
-              },
-              animate: {
-                opacity: 1,
-              },
-            }}
-          >
-            Based on the Threads activity of the past 30 days, you should focus
-            creating content on Next.js
-          </motion.p>
+        <div className="bg-secondary/20 flex size-10 items-center justify-center rounded-full">
+          <Users className="text-secondary size-5" />
         </div>
-        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-pink-500 to-violet-500" />
+        <div>
+          <Typography variant="small" className="text-foreground font-medium">
+            Marie (Aidante)
+          </Typography>
+          <Typography variant="caption" className="text-muted-foreground">
+            A ajoute une observation
+          </Typography>
+        </div>
+      </motion.div>
+      <div className="bg-secondary/5 rounded-lg border p-3">
+        <Typography variant="caption" className="text-muted-foreground">
+          Observation externe
+        </Typography>
+        <Typography variant="small" className="text-foreground mt-1">
+          Semble plus detendu cette semaine, meilleure qualite de sommeil.
+        </Typography>
+      </div>
+    </motion.div>
+  );
+};
+
+const ExportSkeleton = () => {
+  return (
+    <motion.div
+      initial="initial"
+      whileHover="animate"
+      className="flex h-full items-center justify-center"
+    >
+      <motion.div
+        className="bg-background relative flex flex-col items-center rounded-lg border p-6 shadow-lg"
+        whileHover={{ scale: 1.02 }}
+      >
+        <FileText className="text-primary mb-2 size-12" />
+        <Typography variant="small" className="text-foreground font-medium">
+          Rapport PDF
+        </Typography>
+        <Typography variant="caption" className="text-muted-foreground">
+          30 derniers jours
+        </Typography>
+        <motion.div
+          className="bg-secondary absolute -top-2 -right-2 rounded-full px-2 py-1 text-xs text-white"
+          initial={{ scale: 0 }}
+          whileHover={{ scale: 1 }}
+        >
+          Nouveau
+        </motion.div>
       </motion.div>
     </motion.div>
   );
@@ -266,59 +214,58 @@ const Skeleton5 = () => {
 
 const items = [
   {
-    title: "AI Content Generation",
+    title: "Suivi d'humeur quotidien",
     description: (
       <span className="text-sm">
-        Experience the power of AI in generating unique content.
+        Notez votre humeur de 1 a 10 en quelques secondes chaque jour.
       </span>
     ),
-    header: <Skeleton1 />,
+    header: <MoodTrackerSkeleton />,
     className: "md:col-span-1",
-    icon: <Sparkles size={20} />,
+    icon: <Heart className="text-primary size-5" />,
   },
   {
-    title: "Schedule with ease",
+    title: "Gestion des medicaments",
     description: (
       <span className="text-sm">
-        We help you schedule your threads with ease.
+        Suivez vos traitements, dosages et adherence quotidienne.
       </span>
     ),
-    header: <Skeleton2 />,
+    header: <MedicationSkeleton />,
     className: "md:col-span-1",
-    icon: <Calendar size={20} />,
+    icon: <Pill className="text-primary size-5" />,
   },
   {
-    title: "Calendar View",
+    title: "Correlations & insights",
     description: (
       <span className="text-sm">
-        See what you have planned for the day with our calendar view.
+        Decouvrez les liens entre sommeil, medication et humeur.
       </span>
     ),
-    header: <Skeleton3 />,
+    header: <CorrelationSkeleton />,
     className: "md:col-span-1",
-    icon: <CalendarCheck size={20} />,
+    icon: <LineChart className="text-primary size-5" />,
   },
   {
-    title: "Threads Analysis",
+    title: "Role aidant",
     description: (
       <span className="text-sm">
-        Understand your threads with our powerful analytics.
+        Permettez a un proche d&apos;ajouter des observations externes.
       </span>
     ),
-    header: <Skeleton4 />,
+    header: <CaregiverSkeleton />,
     className: "md:col-span-2",
-    icon: <BarChart3 size={20} />,
+    icon: <Users className="text-primary size-5" />,
   },
-
   {
-    title: "See what works",
+    title: "Export pour medecin",
     description: (
       <span className="text-sm">
-        Understand the hype and trends with our powerful research tools.
+        Generez des rapports PDF structures pour vos consultations.
       </span>
     ),
-    header: <Skeleton5 />,
+    header: <ExportSkeleton />,
     className: "md:col-span-1",
-    icon: <X className="size-4 text-neutral-500" />,
+    icon: <FileText className="text-primary size-5" />,
   },
 ];
