@@ -9,7 +9,7 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import type { CurrentOrgPayload } from "@/lib/organizations/get-org";
-import { stripe } from "@/lib/stripe";
+import { getStripeOrThrow } from "@/lib/stripe";
 import { EditBillingButton } from "./edit-billing-button";
 
 type BillingInfoCardProps = {
@@ -21,7 +21,7 @@ export async function BillingInfoCard({ org }: BillingInfoCardProps) {
     return null;
   }
 
-  const customer = await stripe.customers.retrieve(
+  const customer = await getStripeOrThrow().customers.retrieve(
     org.subscription.stripeCustomerId,
   );
 

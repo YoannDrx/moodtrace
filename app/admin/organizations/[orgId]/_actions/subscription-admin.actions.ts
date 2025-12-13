@@ -4,7 +4,7 @@ import { adminAction } from "@/lib/actions/safe-actions";
 import { AUTH_PLANS } from "@/lib/auth/stripe/auth-plans";
 import { invalidateOrgSubscription } from "@/lib/cache-invalidation";
 import { prisma } from "@/lib/prisma";
-import { stripe } from "@/lib/stripe";
+import { getStripeOrThrow } from "@/lib/stripe";
 import { z } from "zod";
 
 export const updateSubscriptionPlanAction = adminAction
@@ -34,7 +34,9 @@ export const updateSubscriptionPlanAction = adminAction
 
     if (planName === "free") {
       if (subscription.stripeSubscriptionId) {
-        await stripe.subscriptions.cancel(subscription.stripeSubscriptionId);
+        await getStripeOrThrow().subscriptions.cancel(
+          subscription.stripeSubscriptionId,
+        );
       }
 
       await prisma.subscription.update({
@@ -63,19 +65,22 @@ export const updateSubscriptionPlanAction = adminAction
       throw new Error("No Stripe subscription found");
     }
 
-    const stripeSubscription = await stripe.subscriptions.retrieve(
+    const stripeSubscription = await getStripeOrThrow().subscriptions.retrieve(
       subscription.stripeSubscriptionId,
     );
 
-    await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
-      items: [
-        {
-          id: stripeSubscription.items.data[0].id,
-          price: priceId,
-        },
-      ],
-      proration_behavior: "always_invoice",
-    });
+    await getStripeOrThrow().subscriptions.update(
+      subscription.stripeSubscriptionId,
+      {
+        items: [
+          {
+            id: stripeSubscription.items.data[0].id,
+            price: priceId,
+          },
+        ],
+        proration_behavior: "always_invoice",
+      },
+    );
 
     await prisma.subscription.update({
       where: { id: subscription.id },
@@ -100,9 +105,12 @@ export const cancelSubscriptionAction = adminAction
       throw new Error("No active subscription found");
     }
 
-    await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
-      cancel_at_period_end: true,
-    });
+    await getStripeOrThrow().subscriptions.update(
+      subscription.stripeSubscriptionId,
+      {
+        cancel_at_period_end: true,
+      },
+    );
 
     await prisma.subscription.update({
       where: { id: subscription.id },
@@ -127,9 +135,12 @@ export const reactivateSubscriptionAction = adminAction
       throw new Error("No subscription found");
     }
 
-    await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
-      cancel_at_period_end: false,
-    });
+    await getStripeOrThrow().subscriptions.update(
+      subscription.stripeSubscriptionId,
+      {
+        cancel_at_period_end: false,
+      },
+    );
 
     await prisma.subscription.update({
       where: { id: subscription.id },
@@ -180,7 +191,7 @@ export const createSubscriptionAction = adminAction
     let stripeCustomerId = organization.stripeCustomerId;
 
     if (!stripeCustomerId) {
-      const customer = await stripe.customers.create({
+      const customer = await getStripeOrThrow().customers.create({
         email: organization.email ?? undefined,
         name: organization.name,
         metadata: {
@@ -196,7 +207,7 @@ export const createSubscriptionAction = adminAction
       });
     }
 
-    const stripeSubscription = await stripe.subscriptions.create({
+    const stripeSubscription = await getStripeOrThrow().subscriptions.create({
       customer: stripeCustomerId,
       items: [{ price: priceId }],
       trial_period_days: plan.freeTrial?.days,

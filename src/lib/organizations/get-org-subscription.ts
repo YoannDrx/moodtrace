@@ -2,7 +2,7 @@ import type { Subscription } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { redisClient } from "@/lib/redis";
 import { CacheKeys, CacheTTL } from "@/lib/redis-keys";
-import { stripe } from "@/lib/stripe";
+import { getStripeOrThrow } from "@/lib/stripe";
 import type { OverrideLimits, PlanLimit } from "../auth/stripe/auth-plans";
 import { getPlanLimits } from "../auth/stripe/auth-plans";
 import { logger } from "../logger";
@@ -47,7 +47,7 @@ export const getOrgActiveSubscription = async (
 
   try {
     // Verify subscription status with Stripe
-    const stripeSubscription = await stripe.subscriptions.retrieve(
+    const stripeSubscription = await getStripeOrThrow().subscriptions.retrieve(
       subscription.stripeSubscriptionId,
     );
 

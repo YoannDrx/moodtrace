@@ -4,7 +4,7 @@ import { orgAction } from "@/lib/actions/safe-actions";
 import { AUTH_PLANS } from "@/lib/auth/stripe/auth-plans";
 import { ActionError } from "@/lib/errors/action-error";
 import { getServerUrl } from "@/lib/server-url";
-import { stripe } from "@/lib/stripe";
+import { getStripeOrThrow } from "@/lib/stripe";
 import { z } from "zod";
 
 export const upgradeOrgAction = orgAction
@@ -48,7 +48,7 @@ export const upgradeOrgAction = orgAction
       }
 
       // Create checkout session
-      const session = await stripe.checkout.sessions.create({
+      const session = await getStripeOrThrow().checkout.sessions.create({
         customer: customerId,
         payment_method_types: ["card"],
         line_items: [

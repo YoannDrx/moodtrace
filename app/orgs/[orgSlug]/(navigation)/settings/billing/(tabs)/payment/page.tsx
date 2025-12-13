@@ -21,7 +21,7 @@ import {
 import { dayjs } from "@/lib/dayjs";
 import { logger } from "@/lib/logger";
 import { getRequiredCurrentOrgCache } from "@/lib/react/cache";
-import { stripe } from "@/lib/stripe";
+import { getStripeOrThrow } from "@/lib/stripe";
 import { cn } from "@/lib/utils";
 import { Download } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -191,11 +191,11 @@ async function BillingPaymentPage() {
   }
 
   const [invoices, upcomingInvoice] = await Promise.all([
-    stripe.invoices.list({
+    getStripeOrThrow().invoices.list({
       customer: org.subscription.stripeCustomerId,
       limit: 12,
     }),
-    stripe.invoices
+    getStripeOrThrow().invoices
       .createPreview({
         customer: org.subscription.stripeCustomerId,
       })

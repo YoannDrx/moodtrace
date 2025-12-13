@@ -1,6 +1,6 @@
 import { getRequiredAdmin } from "@/lib/auth/auth-user";
 import { prisma } from "@/lib/prisma";
-import { stripe } from "@/lib/stripe";
+import { getStripeOrThrow } from "@/lib/stripe";
 import { route } from "@/lib/zod-route";
 import { z } from "zod";
 
@@ -22,7 +22,7 @@ export const GET = route
       return { payments: [] };
     }
 
-    const invoices = await stripe.invoices.list({
+    const invoices = await getStripeOrThrow().invoices.list({
       customer: organization.stripeCustomerId,
       limit: 50,
     });

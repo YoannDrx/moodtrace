@@ -8,6 +8,14 @@ import { Building2, Crown, DollarSign, Users } from "lucide-react";
 import { cacheLife } from "next/dist/server/use-cache/cache-life";
 
 async function calculateTotalMRR() {
+  // Si Stripe n'est pas configuré, retourner 0
+  if (!stripe) {
+    return 0;
+  }
+
+  // Variable locale pour TypeScript (garantit non-null dans la closure)
+  const stripeClient = stripe;
+
   const subscriptions = await prisma.subscription.findMany({
     where: {
       status: { in: ["active", "trialing", "past_due"] },
@@ -28,7 +36,7 @@ async function calculateTotalMRR() {
         if (!sub.stripeSubscriptionId) return null;
 
         try {
-          const stripeSub = await stripe.subscriptions.retrieve(
+          const stripeSub = await stripeClient.subscriptions.retrieve(
             sub.stripeSubscriptionId,
           );
           return stripeSub;

@@ -18,7 +18,7 @@ import { generateSlug } from "./format/id";
 import { logger } from "./logger";
 import { prisma } from "./prisma";
 import { getServerUrl } from "./server-url";
-import { stripe } from "./stripe";
+import { getStripeOrThrow } from "./stripe";
 type SocialProvidersType = Parameters<typeof betterAuth>[0]["socialProviders"];
 
 export const SocialProviders: SocialProvidersType = {};
@@ -171,7 +171,7 @@ export const auth = betterAuth({
 
       organizationCreation: {
         async afterCreate(data) {
-          const stripeCustomer = await stripe.customers.create({
+          const stripeCustomer = await getStripeOrThrow().customers.create({
             email: data.user.email,
             name: data.organization.name,
             metadata: {

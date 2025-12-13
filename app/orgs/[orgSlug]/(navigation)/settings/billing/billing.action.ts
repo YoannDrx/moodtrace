@@ -5,7 +5,7 @@ import { hasPermission } from "@/lib/auth/auth-org";
 import { ActionError } from "@/lib/errors/action-error";
 import { prisma } from "@/lib/prisma";
 import { getServerUrl } from "@/lib/server-url";
-import { stripe } from "@/lib/stripe";
+import { getStripeOrThrow } from "@/lib/stripe";
 import { z } from "zod";
 
 export const openStripePortalAction = orgAction
@@ -27,7 +27,7 @@ export const openStripePortalAction = orgAction
       );
     }
 
-    const stripeBilling = await stripe.billingPortal.sessions.create({
+    const stripeBilling = await getStripeOrThrow().billingPortal.sessions.create({
       customer: stripeCustomerId,
       return_url: `${getServerUrl()}/orgs/${org.slug}/settings/billing`,
     });
@@ -75,7 +75,7 @@ export const cancelOrgSubscriptionAction = orgAction
     }
 
     // Create billing portal session which allows the user to cancel
-    const stripeBilling = await stripe.billingPortal.sessions.create({
+    const stripeBilling = await getStripeOrThrow().billingPortal.sessions.create({
       customer: stripeCustomerId,
       return_url: `${getServerUrl()}${returnUrl}`,
     });
