@@ -87,6 +87,8 @@ export type StepIndicatorProps = {
   currentStep: number;
   /** Optional labels for each step */
   labels?: string[];
+  /** Optional icons for each step (replaces numbers) */
+  icons?: LucideIcon[];
   /** Additional CSS classes */
   className?: string;
 };
@@ -95,14 +97,23 @@ export type StepIndicatorProps = {
  * StepIndicator Component
  *
  * Multi-step progress indicator with checkmarks for completed steps.
+ * Supports icons instead of numbers when provided.
  * Used in multi-step forms like the daily check-in.
  *
  * @example
  * ```tsx
+ * // With numbers
  * <StepIndicator
  *   totalSteps={4}
  *   currentStep={2}
  *   labels={['Humeur', 'Sommeil', 'Médication', 'Contexte']}
+ * />
+ *
+ * // With icons
+ * <StepIndicator
+ *   totalSteps={4}
+ *   currentStep={2}
+ *   icons={[Brain, Moon, Pill, MessageSquare]}
  * />
  * ```
  */
@@ -110,6 +121,7 @@ export function StepIndicator({
   totalSteps,
   currentStep,
   labels,
+  icons,
   className,
 }: StepIndicatorProps) {
   return (
@@ -118,6 +130,7 @@ export function StepIndicator({
         const stepNumber = index + 1;
         const isCompleted = stepNumber < currentStep;
         const isCurrent = stepNumber === currentStep;
+        const StepIcon = icons?.[index];
 
         return (
           <div key={stepNumber} className="flex flex-1 items-center">
@@ -148,6 +161,8 @@ export function StepIndicator({
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
+                ) : StepIcon ? (
+                  <StepIcon className="size-5" />
                 ) : (
                   stepNumber
                 )}

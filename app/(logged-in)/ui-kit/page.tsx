@@ -1,7 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { TrendingUp, CheckCircle, Settings, Filter } from "lucide-react";
+import {
+  TrendingUp,
+  CheckCircle,
+  Settings,
+  Filter,
+  Heart,
+  Shield,
+  BarChart3,
+  Calendar,
+  Pill,
+  Users,
+  Bell,
+  FileText,
+  Brain,
+  Moon,
+  MessageSquare,
+  Plus,
+  Sun,
+  ChevronRight,
+} from "lucide-react";
 
 // Design tokens
 import {
@@ -100,9 +119,24 @@ import {
   SettingsDivider,
 } from "@/components/nowts/settings-section";
 
-// ============================================================================
-// UI Kit Section Component
-// ============================================================================
+// New Components
+import {
+  HeroBadge,
+  TrustIndicator,
+  FeatureCard,
+  NumberedStepper,
+} from "@/components/nowts/hero-components";
+import {
+  PageHeader,
+  CtaCard,
+  QuickAccessCard,
+  ProfileCard,
+  EmptyState,
+} from "@/components/nowts/layout-components";
+
+// =============================================================================
+// UI Kit Section Components
+// =============================================================================
 
 function UIKitSection({
   id,
@@ -145,9 +179,64 @@ function ComponentShowcase({
   );
 }
 
-// ============================================================================
+function NavGroup({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="mb-6">
+      <Typography variant="overline" className="mb-2 block px-3">
+        {title}
+      </Typography>
+      <nav className="flex flex-col gap-0.5">{children}</nav>
+    </div>
+  );
+}
+
+function NavItem({ id, label }: { id: string; label: string }) {
+  return (
+    <a
+      href={`#${id}`}
+      className="hover:bg-muted text-muted-foreground hover:text-foreground rounded-md px-3 py-1.5 text-sm transition-colors"
+    >
+      {label}
+    </a>
+  );
+}
+
+// =============================================================================
+// Dark Mode Toggle
+// =============================================================================
+
+function DarkModeToggle() {
+  const [isDark, setIsDark] = useState(() => {
+    // Check initial state from DOM (only runs once on mount)
+    if (typeof window !== "undefined") {
+      return document.documentElement.classList.contains("dark");
+    }
+    return false;
+  });
+
+  const toggleDarkMode = (checked: boolean) => {
+    setIsDark(checked);
+    document.documentElement.classList.toggle("dark", checked);
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <Sun className="text-muted-foreground size-4" />
+      <Switch checked={isDark} onCheckedChange={toggleDarkMode} />
+      <Moon className="text-muted-foreground size-4" />
+    </div>
+  );
+}
+
+// =============================================================================
 // Main UI Kit Page
-// ============================================================================
+// =============================================================================
 
 export default function UIKitPage() {
   // State for interactive demos
@@ -187,41 +276,61 @@ export default function UIKitPage() {
     { date: "9", mood: 2 as MoodValueBipolar },
   ];
 
-  // Navigation items for quick access
-  const navItems = [
-    { id: "typography", label: "Typography" },
-    { id: "colors", label: "Colors" },
-    { id: "buttons", label: "Buttons" },
-    { id: "inputs", label: "Inputs" },
-    { id: "sliders", label: "Sliders" },
-    { id: "cards", label: "Cards" },
-    { id: "mood", label: "Mood" },
-    { id: "tags", label: "Tags" },
-    { id: "navigation", label: "Navigation" },
-    { id: "dialogs", label: "Dialogs" },
-    { id: "feedback", label: "Feedback" },
-    { id: "medication", label: "Medication" },
-    { id: "settings", label: "Settings" },
+  const howItWorksSteps = [
+    {
+      title: "Créez votre profil",
+      description: "Renseignez vos informations de base",
+    },
+    {
+      title: "Faites votre check-in",
+      description: "2-3 minutes par jour",
+    },
+    {
+      title: "Suivez vos évolutions",
+      description: "Consultez votre timeline",
+    },
+    {
+      title: "Préparez vos consultations",
+      description: "Générez un rapport clair",
+    },
   ];
 
   return (
     <div className="flex min-h-screen">
       {/* Sidebar Navigation */}
-      <aside className="bg-card sticky top-0 hidden h-screen w-64 shrink-0 overflow-y-auto border-r p-6 lg:block">
-        <Typography variant="h3" className="mb-6">
-          UI Kit
-        </Typography>
-        <nav className="flex flex-col gap-1">
-          {navItems.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className="hover:bg-muted text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm transition-colors"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+      <aside className="bg-card sticky top-0 hidden h-screen w-64 shrink-0 overflow-y-auto border-r p-4 lg:block">
+        <div className="mb-6 flex items-center justify-between">
+          <Typography variant="h4">UI Kit</Typography>
+          <DarkModeToggle />
+        </div>
+
+        <NavGroup title="Foundation">
+          <NavItem id="typography" label="Typography" />
+          <NavItem id="colors" label="Colors" />
+          <NavItem id="buttons" label="Buttons" />
+          <NavItem id="inputs" label="Inputs" />
+        </NavGroup>
+
+        <NavGroup title="Components">
+          <NavItem id="cards" label="Cards" />
+          <NavItem id="sliders" label="Sliders" />
+          <NavItem id="tags" label="Tags" />
+          <NavItem id="navigation" label="Navigation" />
+          <NavItem id="dialogs" label="Dialogs" />
+          <NavItem id="feedback" label="Feedback" />
+        </NavGroup>
+
+        <NavGroup title="Domain">
+          <NavItem id="mood" label="Mood" />
+          <NavItem id="medication" label="Medication" />
+          <NavItem id="settings" label="Settings" />
+        </NavGroup>
+
+        <NavGroup title="Patterns">
+          <NavItem id="landing" label="Landing" />
+          <NavItem id="layout" label="Layout" />
+          <NavItem id="contexts" label="Contexts" />
+        </NavGroup>
       </aside>
 
       {/* Main Content */}
@@ -239,6 +348,10 @@ export default function UIKitPage() {
           </div>
 
           <div className="flex flex-col gap-16">
+            {/* ================================================================
+                FOUNDATION
+            ================================================================ */}
+
             {/* Typography */}
             <UIKitSection
               id="typography"
@@ -385,10 +498,16 @@ export default function UIKitPage() {
                 </div>
               </ComponentShowcase>
 
-              <ComponentShowcase title="States">
+              <ComponentShowcase title="With Icons">
                 <div className="flex flex-wrap gap-4">
-                  <Button>Normal</Button>
-                  <Button disabled>Disabled</Button>
+                  <Button>
+                    <Plus className="mr-2 size-4" />
+                    Ajouter
+                  </Button>
+                  <Button variant="outline">
+                    <ChevronRight className="mr-2 size-4" />
+                    Suivant
+                  </Button>
                 </div>
               </ComponentShowcase>
             </UIKitSection>
@@ -469,52 +588,9 @@ export default function UIKitPage() {
               </ComponentShowcase>
             </UIKitSection>
 
-            {/* Sliders */}
-            <UIKitSection
-              id="sliders"
-              title="Sliders"
-              description="Sliders personnalisés pour les valeurs numériques."
-            >
-              <ComponentShowcase title="SliderInput">
-                <div className="flex flex-col gap-6">
-                  <SliderInput
-                    label="Niveau d'énergie"
-                    value={energy}
-                    onChange={setEnergy}
-                    min={0}
-                    max={10}
-                    showLabels={{ min: "Épuisé", max: "Très énergique" }}
-                  />
-                  <SliderInput
-                    label="Niveau d'anxiété"
-                    value={anxiety}
-                    onChange={setAnxiety}
-                    min={0}
-                    max={10}
-                    showLabels={{ min: "Calme", max: "Très anxieux" }}
-                  />
-                  <SliderInput
-                    label="Heures de sommeil"
-                    value={sleepHours}
-                    onChange={setSleepHours}
-                    min={0}
-                    max={14}
-                    unit="h"
-                    showLabels={{ min: "0h", max: "14h" }}
-                  />
-                </div>
-              </ComponentShowcase>
-
-              <ComponentShowcase title="QualitySelector">
-                <div className="flex flex-col gap-2">
-                  <Label>Qualité du sommeil</Label>
-                  <QualitySelector
-                    value={sleepQuality}
-                    onChange={setSleepQuality}
-                  />
-                </div>
-              </ComponentShowcase>
-            </UIKitSection>
+            {/* ================================================================
+                COMPONENTS
+            ================================================================ */}
 
             {/* Cards */}
             <UIKitSection
@@ -560,49 +636,50 @@ export default function UIKitPage() {
               </ComponentShowcase>
             </UIKitSection>
 
-            {/* Mood Components */}
+            {/* Sliders */}
             <UIKitSection
-              id="mood"
-              title="Mood Components"
-              description="Composants spécifiques au suivi d'humeur bipolaire (-3 à +3)."
+              id="sliders"
+              title="Sliders"
+              description="Sliders personnalisés pour les valeurs numériques."
             >
-              <ComponentShowcase title="MoodIndicatorBipolar">
-                <div className="flex flex-wrap items-center gap-4">
-                  {([-3, -2, -1, 0, 1, 2, 3] as MoodValueBipolar[]).map((v) => (
-                    <MoodIndicatorBipolar
-                      key={v}
-                      value={v}
-                      size="lg"
-                      showTooltip
-                    />
-                  ))}
+              <ComponentShowcase title="SliderInput">
+                <div className="flex flex-col gap-6">
+                  <SliderInput
+                    label="Niveau d'énergie"
+                    value={energy}
+                    onChange={setEnergy}
+                    min={0}
+                    max={10}
+                    showLabels={{ min: "Épuisé", max: "Très énergique" }}
+                  />
+                  <SliderInput
+                    label="Niveau d'anxiété"
+                    value={anxiety}
+                    onChange={setAnxiety}
+                    min={0}
+                    max={10}
+                    showLabels={{ min: "Calme", max: "Très anxieux" }}
+                  />
+                  <SliderInput
+                    label="Heures de sommeil"
+                    value={sleepHours}
+                    onChange={setSleepHours}
+                    min={0}
+                    max={14}
+                    unit="h"
+                    showLabels={{ min: "0h", max: "14h" }}
+                  />
                 </div>
               </ComponentShowcase>
 
-              <ComponentShowcase title="MoodIndicatorBipolar Variants">
-                <div className="flex flex-wrap items-center gap-4">
-                  <MoodIndicatorBipolar value={0} size="md" />
-                  <MoodIndicatorBipolar value={0} size="md" variant="outline" />
-                  <MoodIndicatorBipolar value={0} size="md" variant="ghost" />
+              <ComponentShowcase title="QualitySelector">
+                <div className="flex flex-col gap-2">
+                  <Label>Qualité du sommeil</Label>
+                  <QualitySelector
+                    value={sleepQuality}
+                    onChange={setSleepQuality}
+                  />
                 </div>
-              </ComponentShowcase>
-
-              <ComponentShowcase title="MoodSliderBipolar">
-                <div className="flex flex-col gap-4">
-                  <Typography variant="small" className="text-muted-foreground">
-                    Valeur sélectionnée: {mood > 0 ? `+${mood}` : mood} (
-                    {moodBipolarLabels[mood]})
-                  </Typography>
-                  <MoodSliderBipolar value={mood} onChange={setMood} />
-                </div>
-              </ComponentShowcase>
-
-              <ComponentShowcase title="WeekMoodViewBipolar">
-                <WeekMoodViewBipolar data={weekMoodData} />
-              </ComponentShowcase>
-
-              <ComponentShowcase title="MoodChart">
-                <MoodChart data={chartData} />
               </ComponentShowcase>
             </UIKitSection>
 
@@ -652,7 +729,7 @@ export default function UIKitPage() {
                 </Tabs>
               </ComponentShowcase>
 
-              <ComponentShowcase title="StepIndicator">
+              <ComponentShowcase title="StepIndicator (Numbers)">
                 <div className="flex flex-col gap-4">
                   <StepIndicator
                     totalSteps={4}
@@ -679,6 +756,14 @@ export default function UIKitPage() {
                     </Button>
                   </div>
                 </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="StepIndicator (Icons)">
+                <StepIndicator
+                  totalSteps={4}
+                  currentStep={2}
+                  icons={[Brain, Moon, Pill, MessageSquare]}
+                />
               </ComponentShowcase>
 
               <ComponentShowcase title="PeriodSelector">
@@ -822,13 +907,63 @@ export default function UIKitPage() {
               </ComponentShowcase>
             </UIKitSection>
 
+            {/* ================================================================
+                DOMAIN
+            ================================================================ */}
+
+            {/* Mood Components */}
+            <UIKitSection
+              id="mood"
+              title="Mood Components"
+              description="Composants spécifiques au suivi d'humeur bipolaire (-3 à +3)."
+            >
+              <ComponentShowcase title="MoodIndicatorBipolar">
+                <div className="flex flex-wrap items-center gap-4">
+                  {([-3, -2, -1, 0, 1, 2, 3] as MoodValueBipolar[]).map((v) => (
+                    <MoodIndicatorBipolar
+                      key={v}
+                      value={v}
+                      size="lg"
+                      showTooltip
+                    />
+                  ))}
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="MoodIndicatorBipolar Variants">
+                <div className="flex flex-wrap items-center gap-4">
+                  <MoodIndicatorBipolar value={0} size="md" />
+                  <MoodIndicatorBipolar value={0} size="md" variant="outline" />
+                  <MoodIndicatorBipolar value={0} size="md" variant="ghost" />
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="MoodSliderBipolar">
+                <div className="flex flex-col gap-4">
+                  <Typography variant="small" className="text-muted-foreground">
+                    Valeur sélectionnée: {mood > 0 ? `+${mood}` : mood} (
+                    {moodBipolarLabels[mood]})
+                  </Typography>
+                  <MoodSliderBipolar value={mood} onChange={setMood} />
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="WeekMoodViewBipolar">
+                <WeekMoodViewBipolar data={weekMoodData} />
+              </ComponentShowcase>
+
+              <ComponentShowcase title="MoodChart">
+                <MoodChart data={chartData} />
+              </ComponentShowcase>
+            </UIKitSection>
+
             {/* Medication */}
             <UIKitSection
               id="medication"
               title="Medication"
               description="Composants pour la gestion des médicaments."
             >
-              <ComponentShowcase title="MedicationCard">
+              <ComponentShowcase title="MedicationCard (Active)">
                 <MedicationCard
                   name="Lithium"
                   dosageMg={400}
@@ -836,6 +971,16 @@ export default function UIKitPage() {
                   startDate="15/06/2023"
                   adherence={95}
                   onEdit={() => toast.info("Edit medication")}
+                />
+              </ComponentShowcase>
+
+              <ComponentShowcase title="MedicationCard (Stopped)">
+                <MedicationCard
+                  name="Lamotrigine"
+                  dosageMg={200}
+                  timeOfDay={["Soir"]}
+                  endDate="20/08/2023"
+                  status="stopped"
                 />
               </ComponentShowcase>
 
@@ -967,6 +1112,265 @@ export default function UIKitPage() {
                     />
                   </CardContent>
                 </Card>
+              </ComponentShowcase>
+            </UIKitSection>
+
+            {/* ================================================================
+                PATTERNS
+            ================================================================ */}
+
+            {/* Landing Components */}
+            <UIKitSection
+              id="landing"
+              title="Landing Components"
+              description="Composants pour les pages marketing et landing."
+            >
+              <ComponentShowcase title="HeroBadge">
+                <div className="flex flex-wrap gap-4">
+                  <HeroBadge icon={Shield} variant="primary">
+                    Application non médicale
+                  </HeroBadge>
+                  <HeroBadge variant="secondary">Données privées</HeroBadge>
+                  <HeroBadge icon={Bell} variant="warning">
+                    Beta
+                  </HeroBadge>
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="TrustIndicator">
+                <div className="flex flex-wrap gap-6">
+                  <TrustIndicator icon={Heart}>
+                    Conçu avec bienveillance
+                  </TrustIndicator>
+                  <TrustIndicator icon={Shield}>
+                    Données sécurisées
+                  </TrustIndicator>
+                  <TrustIndicator icon={BarChart3}>
+                    Rapports pour votre psy
+                  </TrustIndicator>
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="FeatureCard">
+                <div className="grid gap-4 md:grid-cols-3">
+                  <FeatureCard
+                    icon={Calendar}
+                    title="Check-in quotidien"
+                    description="Renseignez votre humeur, sommeil et contexte en moins de 3 minutes chaque jour."
+                  />
+                  <FeatureCard
+                    icon={Pill}
+                    title="Suivi des traitements"
+                    description="Gérez vos médicaments, doses et observance. Historique des modifications inclus."
+                    iconVariant="secondary"
+                  />
+                  <FeatureCard
+                    icon={BarChart3}
+                    title="Timeline visuelle"
+                    description="Visualisez l'évolution de votre humeur sur plusieurs semaines ou mois."
+                    iconVariant="success"
+                  />
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="NumberedStepper">
+                <NumberedStepper steps={howItWorksSteps} currentStep={2} />
+              </ComponentShowcase>
+            </UIKitSection>
+
+            {/* Layout Components */}
+            <UIKitSection
+              id="layout"
+              title="Layout Components"
+              description="Composants de mise en page pour le dashboard."
+            >
+              <ComponentShowcase title="PageHeader">
+                <PageHeader
+                  title="Médication"
+                  description="Gérez vos traitements"
+                  action={{
+                    label: "Ajouter",
+                    icon: Plus,
+                    onClick: () => toast.info("Add medication"),
+                  }}
+                />
+              </ComponentShowcase>
+
+              <ComponentShowcase title="CtaCard">
+                <div className="flex flex-col gap-4">
+                  <CtaCard
+                    title="Check-in quotidien"
+                    description="Prenez 2 minutes pour noter votre journée"
+                    actionLabel="Commencer"
+                    actionIcon={Brain}
+                    onAction={() => toast.info("Start check-in")}
+                    variant="primary"
+                  />
+                  <CtaCard
+                    title="Nouveau rapport"
+                    description="Générez un rapport pour votre consultation"
+                    actionLabel="Générer"
+                    actionIcon={FileText}
+                    onAction={() => toast.info("Generate report")}
+                    variant="secondary"
+                  />
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="QuickAccessCard">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <QuickAccessCard
+                    icon={Calendar}
+                    label="Timeline"
+                    onClick={() => toast.info("Go to timeline")}
+                  />
+                  <QuickAccessCard
+                    icon={Pill}
+                    label="Médication"
+                    onClick={() => toast.info("Go to medication")}
+                  />
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="ProfileCard">
+                <Card>
+                  <CardContent className="py-4">
+                    <ProfileCard
+                      name="Patient Demo"
+                      email="demo@moodtrace.app"
+                      onEdit={() => toast.info("Edit profile")}
+                    />
+                  </CardContent>
+                </Card>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="EmptyState">
+                <Card>
+                  <EmptyState
+                    icon={Users}
+                    title="Aucun aidant invité"
+                    description="Invitez un proche pour suivre vos observations"
+                    actionLabel="Inviter un aidant"
+                    onAction={() => toast.info("Invite caregiver")}
+                  />
+                </Card>
+              </ComponentShowcase>
+            </UIKitSection>
+
+            {/* Contexts - Mini Previews */}
+            <UIKitSection
+              id="contexts"
+              title="Contexts"
+              description="Exemples de composants assemblés en contexte réel."
+            >
+              <ComponentShowcase title="Dashboard Preview">
+                <div className="bg-background rounded-lg border p-4">
+                  <div className="flex flex-col gap-4">
+                    <CtaCard
+                      title="Check-in quotidien"
+                      description="Prenez 2 minutes pour noter votre journée"
+                      actionLabel="Commencer"
+                      actionIcon={Brain}
+                      actionHref="/app/checkin"
+                      variant="primary"
+                    />
+                    <div className="grid grid-cols-2 gap-4">
+                      <StatCard
+                        icon={TrendingUp}
+                        label="Série"
+                        value={7}
+                        unit="jours"
+                        variant="primary"
+                      />
+                      <StatCard
+                        icon={CheckCircle}
+                        label="Observance"
+                        value={92}
+                        unit="%"
+                        variant="success"
+                      />
+                    </div>
+                    <WeekMoodViewBipolar data={weekMoodData} />
+                    <div className="grid grid-cols-2 gap-4">
+                      <QuickAccessCard
+                        icon={Calendar}
+                        label="Timeline"
+                        href="/app/timeline"
+                      />
+                      <QuickAccessCard
+                        icon={Pill}
+                        label="Médication"
+                        href="/app/medication"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="Check-in Form Preview">
+                <div className="bg-background rounded-lg border p-4">
+                  <div className="flex flex-col gap-6">
+                    <StepIndicator
+                      totalSteps={4}
+                      currentStep={1}
+                      icons={[Brain, Moon, Pill, MessageSquare]}
+                    />
+                    <Card>
+                      <CardContent className="flex flex-col gap-6 p-6">
+                        <div>
+                          <Typography variant="h4" className="mb-4">
+                            Humeur
+                          </Typography>
+                          <MoodSliderBipolar value={mood} onChange={setMood} />
+                        </div>
+                        <SliderInput
+                          label="Niveau d'énergie"
+                          value={energy}
+                          onChange={setEnergy}
+                          min={0}
+                          max={10}
+                          showLabels={{ min: "Épuisé", max: "Très énergique" }}
+                        />
+                      </CardContent>
+                    </Card>
+                    <div className="flex gap-2">
+                      <Button variant="outline" className="flex-1">
+                        Précédent
+                      </Button>
+                      <Button className="flex-1">Suivant</Button>
+                    </div>
+                  </div>
+                </div>
+              </ComponentShowcase>
+
+              <ComponentShowcase title="Settings Preview">
+                <div className="bg-background rounded-lg border p-4">
+                  <div className="flex flex-col gap-4">
+                    <Card>
+                      <CardContent className="py-4">
+                        <ProfileCard
+                          name="Patient Demo"
+                          email="demo@moodtrace.app"
+                        />
+                        <SettingsDivider />
+                        <SettingsRow
+                          label="Changer le mot de passe"
+                          showChevron
+                        />
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="py-4">
+                        <EmptyState
+                          icon={Users}
+                          title="Aucun aidant invité"
+                          actionLabel="Inviter un aidant"
+                          actionHref="/app/settings/caregivers"
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
               </ComponentShowcase>
             </UIKitSection>
           </div>

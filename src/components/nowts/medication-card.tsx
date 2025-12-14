@@ -21,10 +21,14 @@ export type MedicationCardProps = {
   timeOfDay: string[];
   /** Start date (formatted string) */
   startDate?: string;
+  /** End date for stopped medications (formatted string) */
+  endDate?: string;
   /** Adherence percentage (0-100) */
   adherence?: number;
   /** Whether the medication is active */
   isActive?: boolean;
+  /** Status of the medication */
+  status?: "active" | "stopped";
   /** Callback when edit is clicked */
   onEdit?: () => void;
   /** Additional CSS classes */
@@ -47,6 +51,15 @@ export type MedicationCardProps = {
  *   adherence={95}
  *   onEdit={() => openEditDialog(id)}
  * />
+ *
+ * // Stopped medication
+ * <MedicationCard
+ *   name="Lamotrigine"
+ *   dosageMg={200}
+ *   timeOfDay={['Soir']}
+ *   endDate="20/08/2023"
+ *   status="stopped"
+ * />
  * ```
  */
 export function MedicationCard({
@@ -54,36 +67,62 @@ export function MedicationCard({
   dosageMg,
   timeOfDay,
   startDate,
+  endDate,
   adherence,
   isActive = true,
+  status = "active",
   onEdit,
   className,
 }: MedicationCardProps) {
+  const isStopped = status === "stopped" || !isActive;
+
   return (
-    <Card className={cn(!isActive && "opacity-60", className)}>
+    <Card className={cn(isStopped && "opacity-60", className)}>
       <CardContent className="flex items-center justify-between p-4">
         <div className="flex items-start gap-3">
-          <div className="bg-primary/10 text-primary rounded-full p-2">
+          <div
+            className={cn(
+              "rounded-full p-2",
+              isStopped
+                ? "bg-muted text-muted-foreground"
+                : "bg-primary/10 text-primary",
+            )}
+          >
             <Pill className="size-5" />
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
-              <span className="font-semibold">{name}</span>
+              <span
+                className={cn(
+                  "font-semibold",
+                  isStopped && "text-muted-foreground",
+                )}
+              >
+                {name}
+              </span>
               <span className="text-muted-foreground text-sm">
                 {dosageMg} mg
               </span>
             </div>
-            <div className="flex flex-wrap gap-1">
-              {timeOfDay.map((time) => (
-                <span
-                  key={time}
-                  className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs"
-                >
-                  {time}
-                </span>
-              ))}
-            </div>
-            {startDate && (
+            {!isStopped && (
+              <div className="flex flex-wrap gap-1">
+                {timeOfDay.map((time) => (
+                  <span
+                    key={time}
+                    className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs"
+                  >
+                    {time}
+                  </span>
+                ))}
+              </div>
+            )}
+            {isStopped && endDate && (
+              <span className="text-muted-foreground flex items-center gap-1 text-xs">
+                <Calendar className="size-3" />
+                Arrêté le {endDate}
+              </span>
+            )}
+            {!isStopped && startDate && (
               <span className="text-muted-foreground flex items-center gap-1 text-xs">
                 <Calendar className="size-3" />
                 Depuis le {startDate}
@@ -93,7 +132,7 @@ export function MedicationCard({
         </div>
 
         <div className="flex items-center gap-4">
-          {adherence !== undefined && (
+          {!isStopped && adherence !== undefined && (
             <div className="text-right">
               <span
                 className={cn(
@@ -108,7 +147,7 @@ export function MedicationCard({
               </span>
             </div>
           )}
-          {onEdit && (
+          {!isStopped && onEdit && (
             <button
               type="button"
               onClick={onEdit}
