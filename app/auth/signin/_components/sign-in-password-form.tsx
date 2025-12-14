@@ -34,7 +34,7 @@ export const SignInPasswordForm = (props: {
       toast.error(error.message);
     },
     onSuccess: () => {
-      const callbackUrl = getCallbackUrl(props.callbackUrl ?? "/orgs");
+      const callbackUrl = getCallbackUrl(props.callbackUrl ?? "/space");
       window.location.href = callbackUrl;
     },
   });

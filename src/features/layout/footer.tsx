@@ -44,14 +44,14 @@ export function Footer() {
                       variant="link"
                       className="h-auto justify-start p-0"
                     >
-                      <Link href="/orgs">Dashboard</Link>
+                      <Link href="/space">Mon espace</Link>
                     </Button>
                     <Button
                       asChild
                       variant="link"
                       className="h-auto justify-start p-0"
                     >
-                      <Link href="/account">Account</Link>
+                      <Link href="/space">Paramètres</Link>
                     </Button>
                   </nav>
                 </div>

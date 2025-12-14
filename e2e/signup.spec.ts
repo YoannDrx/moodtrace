@@ -5,17 +5,17 @@ import { createTestAccount } from "./utils/auth-test";
 test("sign up and verify account creation", async ({ page }) => {
   const userData = await createTestAccount({
     page,
-    callbackURL: "/orgs",
+    callbackURL: "/space",
   });
 
-  await page.waitForURL(/\/orgs\/.*/);
+  await page.waitForURL(/\/space\/.*/);
 
-  // Verify we're on an organization page
+  // Verify we're on a space page
   const currentUrl = page.url();
-  expect(currentUrl).toMatch(/\/orgs\/.*/);
+  expect(currentUrl).toMatch(/\/space\/.*/);
 
-  // Extract organization slug from URL
-  const orgSlug = currentUrl.split("/orgs/")[1].split("/")[0];
+  // Extract space slug from URL
+  const spaceSlug = currentUrl.split("/space/")[1].split("/")[0];
 
   // Verify the user was created in the database
   const user = await prisma.user.findUnique({
@@ -38,9 +38,9 @@ test("sign up and verify account creation", async ({ page }) => {
   // Verify user is part of an organization
   expect(user?.members.length).toBeGreaterThan(0);
 
-  // Verify the organization slug matches the one in the URL
-  const userOrg = user?.members[0].organization;
-  expect(userOrg?.slug).toBe(orgSlug);
+  // Verify the space slug matches the one in the URL
+  const userSpace = user?.members[0].organization;
+  expect(userSpace?.slug).toBe(spaceSlug);
 
   // Clean up - delete the test user and organization
   // This is optional but helps keep the test database clean

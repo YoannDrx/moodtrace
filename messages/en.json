@@ -220,5 +220,104 @@
     "unauthorized": "Unauthorized",
     "not_found": "Not found",
     "validation": "Invalid data"
+  },
+  "space": {
+    "title": "My health space",
+    "my_space": "My space",
+    "switch_space": "Switch space",
+    "select_space": "Select a space",
+    "create_space": "Create my space",
+    "no_space": "You don't have a space yet",
+    "patient_space": "Patient space",
+    "caregiver_access": "Caregiver access"
+  },
+  "caregiver": {
+    "title": "My caregivers",
+    "my_caregivers": "My caregivers",
+    "invite": "Invite a caregiver",
+    "invite_description": "Invite someone to follow your progress",
+    "role": "Caregiver",
+    "observations": "Observations",
+    "daily_checkin": "Daily check-in",
+    "events": "Events",
+    "add_checkin": "Add check-in",
+    "add_event": "Report an event",
+    "no_observations": "No observations",
+    "from_caregivers": "From my caregivers",
+    "my_observations": "My observations",
+    "patient_data": "Patient data",
+    "view_mood": "View mood",
+    "view_medications": "View medications"
+  },
+  "event_types": {
+    "compulsive_purchase": "Compulsive purchase",
+    "crisis": "Crisis",
+    "conflict": "Conflict",
+    "milestone": "Milestone",
+    "medication_issue": "Medication issue",
+    "other": "Other"
+  },
+  "mood_observed": {
+    "very_good": "Very good",
+    "good": "Good",
+    "neutral": "Neutral",
+    "down": "Down",
+    "very_down": "Very down",
+    "concerning": "Concerning"
+  },
+  "energy_observed": {
+    "high": "High",
+    "normal": "Normal",
+    "low": "Low",
+    "very_low": "Very low"
+  },
+  "social_behavior": {
+    "engaged": "Engaged",
+    "normal": "Normal",
+    "withdrawn": "Withdrawn",
+    "isolated": "Isolated"
+  },
+  "sleep_observed": {
+    "good": "Good",
+    "restless": "Restless",
+    "insomnia": "Insomnia",
+    "oversleeping": "Oversleeping"
+  },
+  "visibility": {
+    "visible": "Visible to patient",
+    "hidden": "Hidden from patient",
+    "hidden_explanation": "This observation will remain private and will not be visible to the patient.",
+    "visible_explanation": "This observation will be visible to the patient."
+  },
+  "severity": {
+    "level": "Severity",
+    "minor": "Minor",
+    "moderate": "Moderate",
+    "significant": "Significant",
+    "serious": "Serious",
+    "critical": "Critical"
+  },
+  "observation_form": {
+    "title": "New observation",
+    "edit_title": "Edit observation",
+    "date": "Date",
+    "general_observation": "General observation",
+    "event_details": "Event details",
+    "event_type": "Event type",
+    "event_title": "Title",
+    "event_title_placeholder": "Briefly describe the event",
+    "details": "Details",
+    "details_placeholder": "Add additional details...",
+    "notes": "Notes",
+    "notes_placeholder": "Add your observations...",
+    "visibility_setting": "Visibility",
+    "save_checkin": "Save check-in",
+    "save_event": "Save event",
+    "checkin_saved": "Check-in saved",
+    "event_saved": "Event saved",
+    "checkin_updated": "Check-in updated",
+    "event_updated": "Event updated",
+    "checkin_deleted": "Check-in deleted",
+    "event_deleted": "Event deleted"
   }
 }

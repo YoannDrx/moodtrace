@@ -1,12 +1,12 @@
 import {
   buildOrgRedirectUrl,
-  extractOrgSlug,
+  extractSpaceSlug,
   findUserOrganization,
   getFirstUserOrganization,
   handleRootRedirect,
   isAdminRoute,
   isReservedSlug,
-  redirectToOrgList,
+  redirectToSpaceList,
   redirectToRoot,
   switchActiveOrganization,
   validateAdminAccess,
@@ -30,7 +30,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const slug = extractOrgSlug(pathname);
+  const slug = extractSpaceSlug(pathname);
   if (!slug) return NextResponse.next();
 
   if (isReservedSlug(slug)) {
@@ -47,7 +47,7 @@ export async function proxy(request: NextRequest) {
     if (firstOrg?.slug) {
       return buildOrgRedirectUrl(request, firstOrg.slug);
     }
-    return redirectToOrgList(request);
+    return redirectToSpaceList(request);
   }
 
   if (activeOrganisation?.slug === slug) {
@@ -57,7 +57,7 @@ export async function proxy(request: NextRequest) {
   const org = await findUserOrganization(slug, session.session.userId);
 
   if (!org) {
-    return redirectToOrgList(request);
+    return redirectToSpaceList(request);
   }
 
   if (org.slug && slug !== org.slug) {

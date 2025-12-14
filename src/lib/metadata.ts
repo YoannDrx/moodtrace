@@ -53,3 +53,29 @@ export const orgMetadata = cache(
   ["org-metadata"],
   { revalidate: 100 },
 );
+
+/**
+ * Metadata pour les espaces (alias de orgMetadata avec descriptions adaptées)
+ */
+export const spaceMetadata = cache(
+  async (spaceSlug: string): Promise<Metadata> => {
+    const space = await prisma.organization.findFirst({
+      where: {
+        slug: spaceSlug,
+      },
+    });
+
+    if (!space) {
+      return {
+        title: "Espace non trouvé",
+      };
+    }
+
+    return {
+      title: `${space.name}`,
+      description: "Votre espace de suivi MoodTrace",
+    };
+  },
+  ["space-metadata"],
+  { revalidate: 100 },
+);

@@ -57,15 +57,15 @@ export const UserDropdown = ({ children }: PropsWithChildren) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/orgs">
+          <Link href="/space">
             <LayoutDashboard className="mr-2 size-4" />
-            Dashboard
+            Mon espace
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/account">
+          <Link href="/space">
             <Settings className="mr-2 size-4" />
-            Account Settings
+            Paramètres
           </Link>
         </DropdownMenuItem>
         {session.data.user.role === "admin" && (

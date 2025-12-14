@@ -47,21 +47,21 @@ const BaseSidebar = () => {
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButtonLink href="/orgs">
+            <SidebarMenuButtonLink href="/space">
               <Building2 />
-              <span>Organization</span>
+              <span>Mon espace</span>
             </SidebarMenuButtonLink>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButtonLink href="/home">
               <Home />
-              <span>Home</span>
+              <span>Accueil</span>
             </SidebarMenuButtonLink>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButtonLink href="/account">
+            <SidebarMenuButtonLink href="/space">
               <User />
-              <span>Account</span>
+              <span>Paramètres</span>
             </SidebarMenuButtonLink>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -85,7 +85,7 @@ describe("SignUpCredentialsForm", () => {
     });
 
     // Check if redirect happened
-    expect(window.location.href).toBe("http://localhost:3000/orgs");
+    expect(window.location.href).toBe("http://localhost:3000/space");
   });
 
   it("should use custom callback URL from searchParams", async () => {
@@ -111,6 +111,6 @@ describe("SignUpCredentialsForm", () => {
     });
 
     // Check if redirected to custom URL
-    expect(window.location.href).toBe("http://localhost:3000/orgs");
+    expect(window.location.href).toBe("http://localhost:3000/space");
   });
 });

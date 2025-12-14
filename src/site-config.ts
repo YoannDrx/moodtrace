@@ -29,7 +29,7 @@ export const SiteConfig = {
      */
     enableImageUpload: false as boolean,
     /**
-     * If enable, the user will be redirected to `/orgs` when he visits the landing page at `/`
+     * If enable, the user will be redirected to `/space` when he visits the landing page at `/`
      * The logic is located in middleware.ts
      */
     enableLandingRedirection: true as boolean,

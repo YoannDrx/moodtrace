@@ -120,7 +120,8 @@ model MedicationChange {
   @@map("medication_change")
 }
 
-/// CaregiverObservation - Observation de l'aidant
+/// CaregiverObservation - DEPRECATED: Migrer vers CaregiverDailyCheckin + CaregiverEvent
+/// @deprecated Utiliser CaregiverDailyCheckin et CaregiverEvent à la place
 model CaregiverObservation {
   id              String   @id @default(nanoid(11))
   caregiverId     String   // User ID de l'aidant (membre avec role "caregiver")
@@ -145,4 +146,66 @@ model CaregiverObservation {
   @@index([patientId, date])
   @@index([organizationId, date])
   @@map("caregiver_observation")
+}
+
+// ============================================
+// Nouveau système d'observations aidant (v2)
+// ============================================
+
+/// CaregiverDailyCheckin - Check-in quotidien de l'aidant (1 par jour max par aidant/patient)
+model CaregiverDailyCheckin {
+  id        String   @id @default(nanoid(11))
+  authorId  String   // L'aidant qui observe
+  subjectId String   // Le patient observé
+  spaceId   String   // organizationId (espace santé)
+  date      DateTime @db.Date
+
+  // Observations
+  moodObserved   String? // "very_good" | "good" | "neutral" | "down" | "very_down" | "concerning"
+  energyObserved String? // "high" | "normal" | "low" | "very_low"
+  socialBehavior String? // "engaged" | "normal" | "withdrawn" | "isolated"
+  sleepObserved  String? // "good" | "restless" | "insomnia" | "oversleeping"
+  notes          String?
+
+  patientVisibility String @default("visible") // "visible" | "hidden" (caché au patient)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author       User         @relation("AuthorCheckins", fields: [authorId], references: [id], onDelete: Cascade)
+  subject      User         @relation("SubjectCheckins", fields: [subjectId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  @@unique([authorId, subjectId, spaceId, date])
+  @@index([subjectId, date])
+  @@index([authorId, date])
+  @@map("caregiver_daily_checkin")
+}
+
+/// CaregiverEvent - Événements ponctuels signalés par l'aidant (multiples par jour possible)
+model CaregiverEvent {
+  id        String @id @default(nanoid(11))
+  authorId  String // L'aidant qui signale
+  subjectId String // Le patient concerné
+  spaceId   String // organizationId (espace santé)
+
+  occurredAt DateTime // Date/heure de l'événement
+  eventType  String   // "compulsive_purchase" | "crisis" | "conflict" | "milestone" | "medication_issue" | "other"
+  severity   Int      // 1-5 (1=mineur, 5=grave)
+  title      String   // Titre court (max 100 chars)
+  details    String?  // Détails (max 1000 chars)
+
+  patientVisibility String @default("visible") // "visible" | "hidden" (caché au patient)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author       User         @relation("AuthorEvents", fields: [authorId], references: [id], onDelete: Cascade)
+  subject      User         @relation("SubjectEvents", fields: [subjectId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, occurredAt])
+  @@index([authorId, occurredAt])
+  @@index([spaceId, eventType])
+  @@map("caregiver_event")
 }

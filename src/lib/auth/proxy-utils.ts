@@ -19,21 +19,21 @@ export const handleRootRedirect = (request: NextRequest) => {
   if (!session) return null;
 
   const url = request.nextUrl.clone();
-  url.pathname = "/orgs";
+  url.pathname = "/space";
   return NextResponse.redirect(url);
 };
 
-export const extractOrgSlug = (pathname: string) => {
-  if (!pathname.startsWith("/orgs/")) return null;
+export const extractSpaceSlug = (pathname: string) => {
+  if (!pathname.startsWith("/space/")) return null;
 
-  const slugStartIndex = "/orgs/".length;
+  const slugStartIndex = "/space/".length;
   const slashIndex = pathname.indexOf("/", slugStartIndex);
   const slug =
     slashIndex === -1
       ? pathname.substring(slugStartIndex)
       : pathname.substring(slugStartIndex, slashIndex);
 
-  const isValidSlug = slug && slug !== "" && pathname !== "/orgs";
+  const isValidSlug = slug && slug !== "" && pathname !== "/space";
   return isValidSlug ? slug : null;
 };
 
@@ -141,9 +141,9 @@ export const switchActiveOrganization = async (
   return NextResponse.redirect(request.url);
 };
 
-export const redirectToOrgList = (request: NextRequest) => {
+export const redirectToSpaceList = (request: NextRequest) => {
   const url = request.nextUrl.clone();
-  url.pathname = "/orgs";
+  url.pathname = "/space";
   return NextResponse.redirect(url);
 };
 

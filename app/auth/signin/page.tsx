@@ -32,7 +32,7 @@ async function AuthSignInPage() {
   const user = await getUser();
 
   if (user) {
-    redirect("/account");
+    redirect("/space");
   }
 
   const providers = Object.keys(SocialProviders ?? {});

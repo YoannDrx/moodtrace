@@ -290,12 +290,12 @@
 
   /* Bipolar mood colors (-3 to +3 scale) */
   --mood-bipolar-minus-3: oklch(0.55 0.22 25); /* Very low - red */
-  --mood-bipolar-minus-2: oklch(0.60 0.18 45); /* Low - dark orange */
+  --mood-bipolar-minus-2: oklch(0.6 0.18 45); /* Low - dark orange */
   --mood-bipolar-minus-1: oklch(0.75 0.15 75); /* Slightly low - amber */
-  --mood-bipolar-0: oklch(0.65 0.20 145); /* Stable - green */
-  --mood-bipolar-plus-1: oklch(0.80 0.17 95); /* Slightly elevated - yellow */
-  --mood-bipolar-plus-2: oklch(0.70 0.13 195); /* Elevated - cyan */
-  --mood-bipolar-plus-3: oklch(0.60 0.18 295); /* Very elevated - violet */
+  --mood-bipolar-0: oklch(0.65 0.2 145); /* Stable - green */
+  --mood-bipolar-plus-1: oklch(0.8 0.17 95); /* Slightly elevated - yellow */
+  --mood-bipolar-plus-2: oklch(0.7 0.13 195); /* Elevated - cyan */
+  --mood-bipolar-plus-3: oklch(0.6 0.18 295); /* Very elevated - violet */
 }
 
 /* =============================================================================
@@ -409,7 +409,7 @@
   --mood-bipolar-minus-3: oklch(0.58 0.22 25); /* Very low - red */
   --mood-bipolar-minus-2: oklch(0.63 0.18 45); /* Low - dark orange */
   --mood-bipolar-minus-1: oklch(0.78 0.15 75); /* Slightly low - amber */
-  --mood-bipolar-0: oklch(0.68 0.20 145); /* Stable - green */
+  --mood-bipolar-0: oklch(0.68 0.2 145); /* Stable - green */
   --mood-bipolar-plus-1: oklch(0.82 0.17 95); /* Slightly elevated - yellow */
   --mood-bipolar-plus-2: oklch(0.73 0.13 195); /* Elevated - cyan */
   --mood-bipolar-plus-3: oklch(0.63 0.18 295); /* Very elevated - violet */

@@ -42,7 +42,7 @@ export function UserActions({ user }: UserActionsProps) {
     onSuccess: () => {
       toast.success("Impersonation started");
       void queryClient.invalidateQueries();
-      window.location.href = "/orgs";
+      window.location.href = "/space";
     },
     onError: (error: Error) => {
       toast.error(`Failed to impersonate user: ${error.message}`);

@@ -1,0 +1,97 @@
+"use client";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { dialogManager } from "@/features/dialog-manager/dialog-manager";
+import { LoadingButton } from "@/features/form/submit-button";
+import { authClient } from "@/lib/auth-client";
+import { unwrapSafePromise } from "@/lib/promises";
+import { useMutation } from "@tanstack/react-query";
+import { AlertTriangle, Building2, UserX2 } from "lucide-react";
+import { toast } from "sonner";
+
+export const UserDeleteCard = () => {
+  const deleteAccountMutation = useMutation({
+    mutationFn: async () => {
+      return unwrapSafePromise(
+        authClient.deleteUser({
+          callbackURL: "/goodbye",
+        }),
+      );
+    },
+  });
+
+  return (
+    <Card className="border-destructive">
+      <CardHeader>
+        <div className="flex items-center gap-2">
+          <AlertTriangle className="text-destructive size-5" />
+          <CardTitle>Supprimer mon compte</CardTitle>
+        </div>
+        <CardDescription>
+          Cette action supprimera définitivement votre compte et toutes les
+          données associées
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <div className="bg-card rounded-lg border p-4">
+          <div className="flex items-start gap-4">
+            <UserX2 className="text-muted-foreground mt-0.5 size-5" />
+            <div className="space-y-1">
+              <p className="leading-none font-medium">Données personnelles</p>
+              <p className="text-muted-foreground text-sm">
+                Toutes vos informations personnelles et paramètres seront
+                définitivement supprimés
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-card rounded-lg border p-4">
+          <div className="flex items-start gap-4">
+            <Building2 className="text-muted-foreground mt-0.5 size-5" />
+            <div className="space-y-1">
+              <p className="leading-none font-medium">Données des espaces</p>
+              <p className="text-muted-foreground text-sm">
+                Si vous êtes propriétaire d&apos;un espace, toutes les données
+                seront supprimées et les abonnements annulés
+              </p>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-end border-t pt-4">
+        <LoadingButton
+          variant="destructive"
+          size="lg"
+          loading={deleteAccountMutation.isPending}
+          onClick={() => {
+            dialogManager.confirm({
+              title: "Supprimer votre compte ?",
+              description:
+                "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+              confirmText: "SUPPRIMER",
+              action: {
+                label: "Supprimer",
+                onClick: async () => {
+                  await deleteAccountMutation.mutateAsync();
+                  toast.success("Votre demande de suppression a été envoyée", {
+                    description:
+                      "Veuillez vérifier votre email pour les instructions suivantes.",
+                  });
+                },
+              },
+            });
+          }}
+        >
+          Supprimer mon compte
+        </LoadingButton>
+      </CardFooter>
+    </Card>
+  );
+};

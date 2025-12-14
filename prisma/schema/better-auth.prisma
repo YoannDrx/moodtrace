@@ -26,6 +26,12 @@ model User {
   caregiverObservations CaregiverObservation[] @relation("CaregiverObservations")
   patientObservations   CaregiverObservation[] @relation("PatientObservations")
 
+  // Nouveau système d'observations aidant (v2)
+  authoredCheckins CaregiverDailyCheckin[] @relation("AuthorCheckins")
+  subjectCheckins  CaregiverDailyCheckin[] @relation("SubjectCheckins")
+  authoredEvents   CaregiverEvent[]        @relation("AuthorEvents")
+  subjectEvents    CaregiverEvent[]        @relation("SubjectEvents")
+
   role       String?
   banned     Boolean?
   banReason  String?
@@ -100,9 +106,13 @@ model Organization {
   email            String?
 
   // MoodTrace relations
-  moodEntries            MoodEntry[]
-  medications            Medication[]
-  caregiverObservations  CaregiverObservation[]
+  moodEntries           MoodEntry[]
+  medications           Medication[]
+  caregiverObservations CaregiverObservation[]
+
+  // Nouveau système d'observations aidant (v2)
+  dailyCheckins CaregiverDailyCheckin[]
+  events        CaregiverEvent[]
 
   @@unique([slug])
   @@map("organization")

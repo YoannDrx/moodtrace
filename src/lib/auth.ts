@@ -171,32 +171,41 @@ export const auth = betterAuth({
 
       organizationCreation: {
         async afterCreate(data) {
-          const stripeCustomer = await getStripeOrThrow().customers.create({
-            email: data.user.email,
-            name: data.organization.name,
-            metadata: {
+          // Create Stripe customer for the organization (optional if Stripe not configured)
+          try {
+            const stripeCustomer = await getStripeOrThrow().customers.create({
+              email: data.user.email,
+              name: data.organization.name,
+              metadata: {
+                organizationId: data.organization.id,
+              },
+            });
+            await prisma.organization.update({
+              where: { id: data.organization.id },
+              data: { stripeCustomerId: stripeCustomer.id },
+            });
+          } catch (error) {
+            // Stripe not configured - this is fine in development/test environments
+            logger.warn("Stripe customer not created for organization", {
               organizationId: data.organization.id,
-            },
-          });
-          await prisma.organization.update({
-            where: { id: data.organization.id },
-            data: { stripeCustomerId: stripeCustomer.id },
-          });
+              error,
+            });
+          }
         },
       },
       async sendInvitationEmail({ id, email }) {
-        const inviteLink = `${getServerUrl()}/orgs/accept-invitation/${id}`;
+        const inviteLink = `${getServerUrl()}/join/${id}`;
         await sendEmail({
           to: email,
-          subject: "You are invited to join an organization",
+          subject: "Vous êtes invité(e) à rejoindre un espace",
           html: MarkdownEmail({
-            preview: `Join an organization on ${SiteConfig.title}`,
+            preview: `Rejoignez un espace sur ${SiteConfig.title}`,
             markdown: `
-            Hello,
+            Bonjour,
 
-            You have been invited to join an organization on ${SiteConfig.title}.
+            Vous avez été invité(e) à rejoindre un espace sur ${SiteConfig.title}.
 
-            [Click here to accept the invitation](${inviteLink})
+            [Cliquez ici pour accepter l'invitation](${inviteLink})
             `,
           }),
         });

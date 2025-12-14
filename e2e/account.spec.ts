@@ -12,26 +12,34 @@ test.describe("account", () => {
   test("delete account flow", async ({ page }) => {
     const userData = await createTestAccount({
       page,
-      callbackURL: "/account",
+      callbackURL: "/space",
     });
 
-    await page.getByRole("link", { name: "Danger" }).click();
-    await page.waitForURL(/\/account\/danger/, { timeout: 10000 });
-    await page.getByRole("button", { name: "Delete" }).click();
+    // Wait for redirect to space page and extract slug
+    await page.waitForURL(/\/space\/[^/]+/, { timeout: 10000 });
+    const currentUrl = page.url();
+    const spaceSlug = currentUrl.split("/space/")[1].split("/")[0];
+
+    // Navigate to danger settings
+    await page.goto(`/space/${spaceSlug}/settings/danger`);
+    await page.waitForURL(/\/space\/.*\/settings\/danger/, { timeout: 10000 });
+    await page.getByRole("button", { name: /supprimer mon compte/i }).click();
 
     const deleteDialog = page.getByRole("alertdialog", {
-      name: "Delete your account ?",
+      name: /supprimer votre compte/i,
     });
     await expect(deleteDialog).toBeVisible();
 
     const confirmInput = deleteDialog.getByRole("textbox");
-    await confirmInput.fill("Delete");
+    await confirmInput.fill("SUPPRIMER");
 
-    const deleteButton = deleteDialog.getByRole("button", { name: /delete/i });
+    const deleteButton = deleteDialog.getByRole("button", {
+      name: /supprimer/i,
+    });
     await expect(deleteButton).toBeEnabled();
     await deleteButton.click();
 
-    await expect(page.getByText("Your deletion has been asked.")).toBeVisible();
+    await expect(page.getByText(/demande de suppression/i)).toBeVisible();
 
     const verification = await prisma.verification.findFirst({
       where: {
@@ -71,22 +79,39 @@ test.describe("account", () => {
   });
 
   test("update name flow", async ({ page }) => {
-    await createTestAccount({ page, callbackURL: "/account" });
+    await createTestAccount({ page, callbackURL: "/space" });
+
+    // Wait for redirect to space page and extract slug
+    await page.waitForURL(/\/space\/[^/]+/, { timeout: 10000 });
+    const currentUrl = page.url();
+    const spaceSlug = currentUrl.split("/space/")[1].split("/")[0];
+
+    // Navigate to profile settings
+    await page.goto(`/space/${spaceSlug}/settings/profile`);
 
     const newName = faker.person.fullName();
-    const input = page.getByRole("textbox", { name: "Name" });
+    const input = page.getByRole("textbox", { name: /nom/i });
     await input.fill(newName);
-    await page.getByRole("button", { name: /save/i }).click();
+    await page.getByRole("button", { name: /enregistrer/i }).click();
 
-    await expect(page.getByText("Profile updated")).toBeVisible();
+    await expect(page.getByText(/profil mis à jour/i)).toBeVisible();
     await page.reload();
     await expect(input).toHaveValue(newName);
   });
 
   test("change password flow", async ({ page }) => {
-    const userData = await createTestAccount({ page, callbackURL: "/account" });
+    const userData = await createTestAccount({ page, callbackURL: "/space" });
 
-    await page.getByRole("link", { name: /change password/i }).click();
+    // Wait for redirect to space page and extract slug
+    await page.waitForURL(/\/space\/[^/]+/, { timeout: 10000 });
+    const currentUrl = page.url();
+    const spaceSlug = currentUrl.split("/space/")[1].split("/")[0];
+
+    // Navigate to password change page
+    await page.goto(`/space/${spaceSlug}/settings/password`, {
+      waitUntil: "load",
+    });
+    await page.waitForTimeout(500);
 
     const newPassword = faker.internet.password({
       length: 12,
@@ -95,21 +120,29 @@ test.describe("account", () => {
     await page.locator('input[name="currentPassword"]').fill(userData.password);
     await page.locator('input[name="newPassword"]').fill(newPassword);
     await page.locator('input[name="confirmPassword"]').fill(newPassword);
-    await page.getByRole("button", { name: /Change Password/i }).click();
+    await page
+      .getByRole("button", { name: /changer le mot de passe/i })
+      .click();
 
+    // Wait for redirect to profile page (more reliable than waiting for toast)
+    await page.waitForURL(/\/space\/.*\/settings\/profile/, { timeout: 15000 });
+
+    // Sign out
     await signOutAccount({ page });
 
+    // Sign in with new password
     await signInAccount({
       page,
       userData: {
         email: userData.email,
         password: newPassword,
       },
-      callbackURL: "/orgs",
+      callbackURL: "/space",
     });
 
-    await page.waitForURL(/\/orgs\/.*/, { timeout: 10000 });
+    await page.waitForURL(/\/space\/.*/, { timeout: 10000 });
 
+    // Cleanup
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
     });

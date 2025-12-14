@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { AUTH_PLANS, getPlanFeatures } from "@/lib/auth/stripe/auth-plans";
-import { SimplePricingCard } from "@app/orgs/[orgSlug]/(navigation)/settings/billing/(tabs)/_components/simple-pricing-card";
+import { SimplePricingCard } from "@app/space/[spaceSlug]/(navigation)/settings/billing/(tabs)/_components/simple-pricing-card";
 import Link from "next/link";
 import { closeGlobalDialog } from "./global-dialog.store";
 
@@ -34,7 +34,7 @@ export const OrgPlanDialog = () => {
               features={getPlanFeatures(card)}
               action={
                 <Button asChild>
-                  <Link href="/orgs/default/settings/billing">Upgrade</Link>
+                  <Link href="/space">Améliorer</Link>
                 </Button>
               }
             />

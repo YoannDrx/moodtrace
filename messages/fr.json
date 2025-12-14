@@ -220,5 +220,104 @@
     "unauthorized": "Non autorisé",
     "not_found": "Non trouvé",
     "validation": "Données invalides"
+  },
+  "space": {
+    "title": "Mon espace santé",
+    "my_space": "Mon espace",
+    "switch_space": "Changer d'espace",
+    "select_space": "Sélectionner un espace",
+    "create_space": "Créer mon espace",
+    "no_space": "Vous n'avez pas encore d'espace",
+    "patient_space": "Espace patient",
+    "caregiver_access": "Accès aidant"
+  },
+  "caregiver": {
+    "title": "Mes proches",
+    "my_caregivers": "Mes proches",
+    "invite": "Inviter un proche",
+    "invite_description": "Invitez un proche à suivre votre évolution",
+    "role": "Proche aidant",
+    "observations": "Observations",
+    "daily_checkin": "Check-in quotidien",
+    "events": "Événements",
+    "add_checkin": "Ajouter un check-in",
+    "add_event": "Signaler un événement",
+    "no_observations": "Aucune observation",
+    "from_caregivers": "De mes proches",
+    "my_observations": "Mes observations",
+    "patient_data": "Données du patient",
+    "view_mood": "Voir l'humeur",
+    "view_medications": "Voir les médicaments"
+  },
+  "event_types": {
+    "compulsive_purchase": "Achat compulsif",
+    "crisis": "Crise",
+    "conflict": "Conflit",
+    "milestone": "Événement marquant",
+    "medication_issue": "Problème médicament",
+    "other": "Autre"
+  },
+  "mood_observed": {
+    "very_good": "Très bien",
+    "good": "Bien",
+    "neutral": "Neutre",
+    "down": "Bas",
+    "very_down": "Très bas",
+    "concerning": "Préoccupant"
+  },
+  "energy_observed": {
+    "high": "Élevée",
+    "normal": "Normale",
+    "low": "Faible",
+    "very_low": "Très faible"
+  },
+  "social_behavior": {
+    "engaged": "Engagé",
+    "normal": "Normal",
+    "withdrawn": "Renfermé",
+    "isolated": "Isolé"
+  },
+  "sleep_observed": {
+    "good": "Bon",
+    "restless": "Agité",
+    "insomnia": "Insomnie",
+    "oversleeping": "Hypersomnie"
+  },
+  "visibility": {
+    "visible": "Visible par le patient",
+    "hidden": "Caché au patient",
+    "hidden_explanation": "Cette observation restera privée et ne sera pas visible par le patient.",
+    "visible_explanation": "Cette observation sera visible par le patient."
+  },
+  "severity": {
+    "level": "Sévérité",
+    "minor": "Mineur",
+    "moderate": "Modéré",
+    "significant": "Significatif",
+    "serious": "Sérieux",
+    "critical": "Critique"
+  },
+  "observation_form": {
+    "title": "Nouvelle observation",
+    "edit_title": "Modifier l'observation",
+    "date": "Date",
+    "general_observation": "Observation générale",
+    "event_details": "Détails de l'événement",
+    "event_type": "Type d'événement",
+    "event_title": "Titre",
+    "event_title_placeholder": "Décrivez brièvement l'événement",
+    "details": "Détails",
+    "details_placeholder": "Ajoutez des détails supplémentaires...",
+    "notes": "Notes",
+    "notes_placeholder": "Ajoutez vos observations...",
+    "visibility_setting": "Visibilité",
+    "save_checkin": "Enregistrer le check-in",
+    "save_event": "Enregistrer l'événement",
+    "checkin_saved": "Check-in enregistré",
+    "event_saved": "Événement enregistré",
+    "checkin_updated": "Check-in mis à jour",
+    "event_updated": "Événement mis à jour",
+    "checkin_deleted": "Check-in supprimé",
+    "event_deleted": "Événement supprimé"
   }
 }

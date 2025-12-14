@@ -752,3 +752,210 @@ export const sleepQualityLabelsEn: Record<SleepQuality, string> = {
   average: "Average",
   good: "Good",
 };
+
+// =============================================================================
+// CAREGIVER EVENT TYPES
+// =============================================================================
+
+/**
+ * Types d'événements signalés par les aidants
+ */
+export type EventType =
+  | "compulsive_purchase"
+  | "crisis"
+  | "conflict"
+  | "milestone"
+  | "medication_issue"
+  | "other";
+
+/**
+ * Tokens visuels pour les types d'événements
+ * Inclut l'icône Lucide et la couleur associée
+ */
+export const eventTypeTokens: Record<
+  EventType,
+  { icon: string; color: string; bgColor: string }
+> = {
+  compulsive_purchase: {
+    icon: "ShoppingCart",
+    color: "#EA580C", // Orange
+    bgColor: "#FFF7ED", // Orange light bg
+  },
+  crisis: {
+    icon: "AlertTriangle",
+    color: "#DC2626", // Red
+    bgColor: "#FEE2E2", // Red light bg
+  },
+  conflict: {
+    icon: "Swords",
+    color: "#CA8A04", // Yellow/amber
+    bgColor: "#FEF9C3", // Yellow light bg
+  },
+  milestone: {
+    icon: "Star",
+    color: "#2563EB", // Blue
+    bgColor: "#DBEAFE", // Blue light bg
+  },
+  medication_issue: {
+    icon: "Pill",
+    color: "#7C3AED", // Purple
+    bgColor: "#EDE9FE", // Purple light bg
+  },
+  other: {
+    icon: "MoreHorizontal",
+    color: "#6B7280", // Gray
+    bgColor: "#F3F4F6", // Gray light bg
+  },
+} as const;
+
+/**
+ * Récupère les tokens visuels pour un type d'événement
+ */
+export function getEventTypeTokens(type: EventType) {
+  return eventTypeTokens[type];
+}
+
+// =============================================================================
+// SEVERITY LEVELS
+// =============================================================================
+
+/**
+ * Niveaux de sévérité pour les événements (1-5)
+ */
+export type SeverityLevel = 1 | 2 | 3 | 4 | 5;
+
+/**
+ * Tokens visuels pour les niveaux de sévérité
+ */
+export const severityTokens: Record<
+  SeverityLevel,
+  { color: string; bgColor: string }
+> = {
+  1: {
+    color: "#22C55E", // Green - minor
+    bgColor: "#DCFCE7",
+  },
+  2: {
+    color: "#84CC16", // Lime - moderate
+    bgColor: "#ECFCCB",
+  },
+  3: {
+    color: "#F59E0B", // Amber - significant
+    bgColor: "#FEF3C7",
+  },
+  4: {
+    color: "#EA580C", // Orange - serious
+    bgColor: "#FFEDD5",
+  },
+  5: {
+    color: "#DC2626", // Red - critical
+    bgColor: "#FEE2E2",
+  },
+} as const;
+
+/**
+ * Récupère les tokens visuels pour un niveau de sévérité
+ */
+export function getSeverityTokens(level: SeverityLevel) {
+  return severityTokens[level];
+}
+
+// =============================================================================
+// CAREGIVER OBSERVATION FIELDS
+// =============================================================================
+
+/**
+ * Options pour l'humeur observée par l'aidant
+ */
+export type MoodObserved =
+  | "very_good"
+  | "good"
+  | "neutral"
+  | "down"
+  | "very_down"
+  | "concerning";
+
+/**
+ * Tokens visuels pour l'humeur observée
+ */
+export const moodObservedTokens: Record<
+  MoodObserved,
+  { color: string; bgColor: string }
+> = {
+  very_good: { color: "#06B6D4", bgColor: "#CFFAFE" },
+  good: { color: "#22C55E", bgColor: "#DCFCE7" },
+  neutral: { color: "#6B7280", bgColor: "#F3F4F6" },
+  down: { color: "#F59E0B", bgColor: "#FEF3C7" },
+  very_down: { color: "#EA580C", bgColor: "#FFEDD5" },
+  concerning: { color: "#DC2626", bgColor: "#FEE2E2" },
+} as const;
+
+/**
+ * Options pour l'énergie observée par l'aidant
+ */
+export type EnergyObserved = "high" | "normal" | "low" | "very_low";
+
+/**
+ * Tokens visuels pour l'énergie observée
+ */
+export const energyObservedTokens: Record<
+  EnergyObserved,
+  { color: string; bgColor: string }
+> = {
+  high: { color: "#06B6D4", bgColor: "#CFFAFE" },
+  normal: { color: "#22C55E", bgColor: "#DCFCE7" },
+  low: { color: "#F59E0B", bgColor: "#FEF3C7" },
+  very_low: { color: "#DC2626", bgColor: "#FEE2E2" },
+} as const;
+
+/**
+ * Options pour le comportement social observé
+ */
+export type SocialBehavior = "engaged" | "normal" | "withdrawn" | "isolated";
+
+/**
+ * Tokens visuels pour le comportement social
+ */
+export const socialBehaviorTokens: Record<
+  SocialBehavior,
+  { color: string; bgColor: string }
+> = {
+  engaged: { color: "#06B6D4", bgColor: "#CFFAFE" },
+  normal: { color: "#22C55E", bgColor: "#DCFCE7" },
+  withdrawn: { color: "#F59E0B", bgColor: "#FEF3C7" },
+  isolated: { color: "#DC2626", bgColor: "#FEE2E2" },
+} as const;
+
+/**
+ * Options pour le sommeil observé
+ */
+export type SleepObserved = "good" | "restless" | "insomnia" | "oversleeping";
+
+/**
+ * Tokens visuels pour le sommeil observé
+ */
+export const sleepObservedTokens: Record<
+  SleepObserved,
+  { color: string; bgColor: string }
+> = {
+  good: { color: "#22C55E", bgColor: "#DCFCE7" },
+  restless: { color: "#F59E0B", bgColor: "#FEF3C7" },
+  insomnia: { color: "#EA580C", bgColor: "#FFEDD5" },
+  oversleeping: { color: "#7C3AED", bgColor: "#EDE9FE" },
+} as const;
+
+/**
+ * Options de visibilité patient
+ */
+export type PatientVisibility = "visible" | "hidden";
+
+/**
+ * Tokens visuels pour la visibilité
+ */
+export const patientVisibilityTokens: Record<
+  PatientVisibility,
+  { icon: string; color: string }
+> = {
+  visible: { icon: "Eye", color: "#22C55E" },
+  hidden: { icon: "EyeOff", color: "#6B7280" },
+} as const;

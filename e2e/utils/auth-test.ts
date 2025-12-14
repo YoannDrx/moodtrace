@@ -1,7 +1,7 @@
 import { logger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { faker } from "@faker-js/faker";
-import type { Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import { retry } from "./retry";
 
 export const getUserEmail = () =>
@@ -40,18 +40,19 @@ export async function createTestAccount(options: {
 
   // Wait for navigation to complete - we should be redirected to the callback URL
   if (options.callbackURL) {
-    await options.page.waitForLoadState("networkidle");
     // Extract pathname from callbackURL and match it regardless of domain
+    // Add .* to match any sub-paths (e.g., /space matches /space/[slug])
     const callbackPath = new URL(options.callbackURL, "http://localhost")
       .pathname;
     await options.page.waitForURL(
       new RegExp(
-        `^[^/]*//[^/]*${callbackPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
+        `^[^/]*//[^/]*${callbackPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.*`,
       ),
       {
         timeout: 30000,
       },
     );
+    await options.page.waitForLoadState("load");
   }
 
   if (options.admin) {
@@ -111,10 +112,11 @@ export async function signInAccount(options: {
   if (callbackURL) {
     try {
       // Extract pathname from callbackURL and match it regardless of domain
+      // Add .* to match any sub-paths (e.g., /space matches /space/[slug])
       const callbackPath = new URL(callbackURL, "http://localhost").pathname;
       await page.waitForURL(
         new RegExp(
-          `^[^/]*//[^/]*${callbackPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
+          `^[^/]*//[^/]*${callbackPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.*`,
         ),
         { timeout: 30000 },
       );
@@ -133,11 +135,28 @@ export async function signInAccount(options: {
 export async function signOutAccount(options: { page: Page }) {
   const { page } = options;
 
-  // Navigate to account page
-  await page.goto(`/account`);
+  // Navigate to space page which will show the user menu
+  await page.goto(`/space`);
 
-  // Click the sign out button
-  await page.getByRole("button", { name: /sign out/i }).click();
+  // Wait for redirect to space with slug
+  await page.waitForURL(/\/space\/[^/]+/, { timeout: 10000 });
+
+  // Wait for the page to load
+  await page.waitForLoadState("load");
+  // Wait for any dev overlay to disappear
+  await page.waitForTimeout(1000);
+
+  // Click on the user button in the sidebar footer to open the dropdown
+  // The button contains the user's name and playwright-test email
+  // Using force:true to bypass Next.js dev overlay intercepts
+  const userButton = page.getByRole("button", {
+    name: /playwright-test-/i,
+  });
+  await expect(userButton).toBeVisible({ timeout: 10000 });
+  await userButton.click({ force: true });
+
+  // Click the logout item in the dropdown
+  await page.getByRole("menuitem", { name: /logout/i }).click({ force: true });
 
   await page.waitForURL(/\/auth\/signin/, { timeout: 10000 });
 }

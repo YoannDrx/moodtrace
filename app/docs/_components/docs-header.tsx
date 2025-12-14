@@ -23,7 +23,7 @@ export function DocsHeader() {
               <Link href="/">Home</Link>
             </Button>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/orgs">Dashboard</Link>
+              <Link href="/space">Mon espace</Link>
             </Button>
           </div>
         </div>

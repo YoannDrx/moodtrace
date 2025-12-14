@@ -8,13 +8,20 @@ test("password reset flow", async ({ page }) => {
   // 1. Create a test account
   const userData = await createTestAccount({
     page,
-    callbackURL: "/account",
+    callbackURL: "/space",
   });
 
-  await page.waitForURL(/\/account/, { timeout: 10000 });
+  await page.waitForURL(/\/space/, { timeout: 10000 });
 
-  // 2. Sign out
-  await page.getByRole("button", { name: /sign out/i }).click();
+  // 2. Sign out - click on the user button in sidebar and then logout
+  // Wait for any dev overlay to disappear
+  await page.waitForTimeout(1000);
+  const userButton = page.getByRole("button", {
+    name: /playwright-test-/i,
+  });
+  await expect(userButton).toBeVisible({ timeout: 10000 });
+  await userButton.click({ force: true });
+  await page.getByRole("menuitem", { name: /logout/i }).click({ force: true });
   await page.waitForURL(/\/auth\/signin/, { timeout: 10000 });
 
   // 3. Go to forget password page
@@ -68,7 +75,7 @@ test("password reset flow", async ({ page }) => {
       email: userData.email,
       password: newPassword,
     },
-    callbackURL: "/orgs",
+    callbackURL: "/space",
   });
 
   // Clean up - delete the test user

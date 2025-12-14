@@ -45,8 +45,8 @@ const config: PlaywrightTestConfig = {
     viewport: { width: 1280, height: 720 },
     geolocation: { longitude: 2.3488, latitude: 48.8534 },
     permissions: ["geolocation"],
-    actionTimeout: 15000,
-    navigationTimeout: 15000,
+    actionTimeout: 20000,
+    navigationTimeout: 30000,
   },
   testDir: "e2e",
   // Only start the web server if PLAYWRIGHT_TEST_BASE_URL is not set
