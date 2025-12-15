@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { MobileBottomNav } from "@/components/ui/mobile-bottom-nav";
 import {
   Sidebar,
   SidebarContent,
@@ -62,47 +63,50 @@ export function SpaceSidebar({
   const basePath = `/space/${slug}`;
 
   return (
-    <Sidebar variant="inset">
-      <SidebarHeader className="flex flex-col gap-2">
-        {isSettingsPage ? (
-          <Button variant="ghost" className="justify-start" asChild>
-            <Link href={basePath} prefetch={false}>
-              <ArrowLeft className="size-4" />
-              <span>Retour au tableau de bord</span>
-            </Link>
-          </Button>
-        ) : (
-          <>
-            <SpaceSelector spaces={userSpaces} currentSpaceSlug={slug} />
-            <SpaceCommand />
-          </>
-        )}
-      </SidebarHeader>
-      <SidebarContent className="border-card">
-        {links.map((link) => (
-          <SidebarGroup key={link.title}>
-            <SidebarGroupLabel>{link.title}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarNavigationMenu link={link} />
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
-      </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-2">
-        {!isSettingsPage && (
-          <>
-            <UpgradeCard />
-            <Button variant="outline" asChild size="sm">
-              <Link href={`${basePath}/settings`} prefetch={false}>
-                <Settings className="size-4" />
-                <span>Paramètres</span>
+    <>
+      <Sidebar variant="inset">
+        <SidebarHeader className="flex flex-col gap-2">
+          {isSettingsPage ? (
+            <Button variant="ghost" className="justify-start" asChild>
+              <Link href={basePath} prefetch={false}>
+                <ArrowLeft className="size-4" />
+                <span>Retour au tableau de bord</span>
               </Link>
             </Button>
-          </>
-        )}
-        <SidebarUserButton />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+          ) : (
+            <>
+              <SpaceSelector spaces={userSpaces} currentSpaceSlug={slug} />
+              <SpaceCommand />
+            </>
+          )}
+        </SidebarHeader>
+        <SidebarContent className="border-card">
+          {links.map((link) => (
+            <SidebarGroup key={link.title}>
+              <SidebarGroupLabel>{link.title}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarNavigationMenu link={link} />
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ))}
+        </SidebarContent>
+        <SidebarFooter className="flex flex-col gap-2">
+          {!isSettingsPage && (
+            <>
+              <UpgradeCard />
+              <Button variant="outline" asChild size="sm">
+                <Link href={`${basePath}/settings`} prefetch={false}>
+                  <Settings className="size-4" />
+                  <span>Paramètres</span>
+                </Link>
+              </Button>
+            </>
+          )}
+          <SidebarUserButton />
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
+      <MobileBottomNav groups={allLinks} />
+    </>
   );
 }

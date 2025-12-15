@@ -4,37 +4,50 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* MoodTrace Design System - Color Mappings */
+  /* MoodTrace Design System - Warm & Clinical */
+  
+  /* Colors - Warm Clinical Palette */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-info: var(--info);
-  --color-info-foreground: var(--info-foreground);
+  
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -83,7 +96,7 @@
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
 
-  /* Custom */
+  /* Custom Animations */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-fade-in: fade-in 0.3s ease-out;
@@ -97,145 +110,98 @@
   --container-10xl: 128rem;
 
   @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
   }
-
   @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
   }
-
   @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
-
   @keyframes fade-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
-
   @keyframes slide-up {
-    from {
-      transform: translateY(10px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
-
   @keyframes slide-down {
-    from {
-      transform: translateY(-10px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
-
   @keyframes scale-in {
-    from {
-      transform: scale(0.95);
-      opacity: 0;
-    }
-    to {
-      transform: scale(1);
-      opacity: 1;
-    }
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
   }
-
   @keyframes scale-out {
-    from {
-      transform: scale(1);
-      opacity: 1;
-    }
-    to {
-      transform: scale(0.95);
-      opacity: 0;
-    }
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(0.95); opacity: 0; }
   }
 }
 
 /* =============================================================================
-   MOODTRACE LIGHT THEME (Default)
-   Palette: Teal primary (#2A8FA8), Warm white background (#F8F7F3)
+   MOODTRACE WARM & CLINICAL THEME (Default)
    ============================================================================= */
-:root,
-.force-light-theme {
-  /* Background - Warm white, not harsh */
-  --background: oklch(0.98 0.005 85);
-  --foreground: oklch(0.25 0.02 250);
+:root {
+  /* Background - Cream #FDFBF7 */
+  --background: oklch(0.98 0.01 95); /* Approx #FDFBF7 */
 
-  /* Card */
+  /* Text - Dark Gray #1A202C */
+  --foreground: oklch(0.2 0.02 260); /* Approx #1A202C */
+
+  /* Card - White #FFFFFF */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.25 0.02 250);
+  --card-foreground: oklch(0.2 0.02 260);
 
-  /* Popover */
+  /* Popover - White */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.02 250);
+  --popover-foreground: oklch(0.2 0.02 260);
 
-  /* Primary - Teal (Trust, calm, medical) */
-  --primary: oklch(0.58 0.12 195);
-  --primary-foreground: oklch(1 0 0);
+  /* Primary - Teal #0E7980 */
+  --primary: oklch(0.52 0.12 205); /* #0E7980 matches this teal range */
+  --primary-foreground: oklch(1 0 0); /* White text on primary */
 
-  /* Secondary - Soft green (Healing, progress) */
-  --secondary: oklch(0.65 0.13 155);
-  --secondary-foreground: oklch(1 0 0);
+  /* Secondary - Accent Surface #E6F0F1 (Very light cyan/blue) */
+  --secondary: oklch(0.95 0.02 200); /* #E6F0F1 */
+  --secondary-foreground: oklch(0.52 0.12 205); /* Primary color for text */
 
-  /* Muted */
-  --muted: oklch(0.96 0.005 85);
-  --muted-foreground: oklch(0.45 0.02 250);
+  /* Muted - Soft Gray/Cream */
+  --muted: oklch(0.96 0.01 200);
+  --muted-foreground: oklch(0.55 0.03 260); /* #718096 */
 
-  /* Accent - Light teal */
-  --accent: oklch(0.92 0.03 195);
-  --accent-foreground: oklch(0.35 0.08 195);
+  /* Accent - Similar to secondary but for interactions */
+  --accent: oklch(0.95 0.02 200);
+  --accent-foreground: oklch(0.52 0.12 205);
 
-  /* Destructive */
-  --destructive: oklch(0.55 0.2 25);
+  /* Destructive - Red */
+  --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(1 0 0);
 
-  /* Border & Input */
-  --border: oklch(0.9 0.005 250);
-  --input: oklch(0.9 0.005 250);
-  --ring: oklch(0.58 0.12 195);
+  /* Border - #EDF2F7 (Light Gray) */
+  --border: oklch(0.94 0.01 250); 
+  --input: oklch(0.94 0.01 250);
+  --ring: oklch(0.52 0.12 205); /* Primary color */
 
-  /* Chart colors - MoodTrace theme */
-  --chart-1: oklch(0.58 0.12 195); /* Teal primary */
-  --chart-2: oklch(0.65 0.13 155); /* Green secondary */
-  --chart-3: oklch(0.75 0.15 75); /* Warning orange */
-  --chart-4: oklch(0.6 0.15 300); /* Violet */
-  --chart-5: oklch(0.65 0.18 350); /* Pink */
+  /* Chart colors - Aligned with mood */
+  --chart-1: oklch(0.52 0.12 205); /* Primary Teal */
+  --chart-2: oklch(0.65 0.13 155);
+  --chart-3: oklch(0.75 0.15 75);
+  --chart-4: oklch(0.6 0.15 300);
+  --chart-5: oklch(0.65 0.18 350);
 
-  /* Sidebar */
-  --sidebar: oklch(0.97 0.005 85);
-  --sidebar-foreground: oklch(0.25 0.02 250);
-  --sidebar-primary: oklch(0.58 0.12 195);
+  /* Sidebar - White (from specs) */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.2 0.02 260);
+  --sidebar-primary: oklch(0.52 0.12 205);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.92 0.03 195);
-  --sidebar-accent-foreground: oklch(0.35 0.08 195);
-  --sidebar-border: oklch(0.9 0.005 250);
-  --sidebar-ring: oklch(0.58 0.12 195);
+  --sidebar-accent: oklch(0.95 0.02 200); /* #E6F0F1 */
+  --sidebar-accent-foreground: oklch(0.52 0.12 205);
+  --sidebar-border: oklch(0.94 0.01 250);
+  --sidebar-ring: oklch(0.52 0.12 205);
 
   /* Typography */
   --font-sans:
@@ -244,29 +210,18 @@
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
 
-  /* Radius */
-  --radius: 0.375rem;
+  /* Radius - rounded-lg (8px) as base */
+  --radius: 0.5rem;
 
-  /* Shadows */
-  --shadow-x: 0;
-  --shadow-y: 1px;
-  --shadow-blur: 3px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.1;
-  --shadow-color: oklch(0 0 0);
-  --shadow-2xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl:
-    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* Shadows - Warm Clinical */
+  --shadow-2xs: 0 1px 2px 0 rgb(0 0 0 / 0.02);
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  --shadow-sm: 0 2px 8px 0 rgb(0 0 0 / 0.04); /* Specified in prompt */
+  --shadow: 0 4px 12px 0 rgb(0 0 0 / 0.06);
+  --shadow-md: 0 6px 16px -1px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 24px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 32px -5px rgb(0 0 0 / 0.1);
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
 
   /* Semantic colors */
   --success: oklch(0.65 0.2 145);
@@ -277,77 +232,57 @@
   --info-foreground: oklch(1 0 0);
 
   /* Mood colors (1-10 scale) - Red to Cyan gradient */
-  --mood-1: oklch(0.35 0.12 30); /* Very difficult - dark red/brown */
-  --mood-2: oklch(0.45 0.2 25); /* Difficult - red */
-  --mood-3: oklch(0.55 0.2 25); /* Quite difficult - lighter red */
-  --mood-4: oklch(0.6 0.18 45); /* Rather low - dark orange */
-  --mood-5: oklch(0.75 0.15 85); /* Neutral - orange/yellow */
-  --mood-6: oklch(0.7 0.18 125); /* Okay - lime green */
-  --mood-7: oklch(0.65 0.17 145); /* Good - green */
-  --mood-8: oklch(0.65 0.14 165); /* Very good - emerald */
-  --mood-9: oklch(0.65 0.12 185); /* Excellent - teal */
-  --mood-10: oklch(0.7 0.13 195); /* Optimal - cyan */
+  --mood-1: oklch(0.35 0.12 30);
+  --mood-2: oklch(0.45 0.2 25);
+  --mood-3: oklch(0.55 0.2 25);
+  --mood-4: oklch(0.6 0.18 45);
+  --mood-5: oklch(0.75 0.15 85);
+  --mood-6: oklch(0.7 0.18 125);
+  --mood-7: oklch(0.65 0.17 145);
+  --mood-8: oklch(0.65 0.14 165);
+  --mood-9: oklch(0.65 0.12 185);
+  --mood-10: oklch(0.7 0.13 195);
 
   /* Bipolar mood colors (-3 to +3 scale) */
-  --mood-bipolar-minus-3: oklch(0.55 0.22 25); /* Very low - red */
-  --mood-bipolar-minus-2: oklch(0.6 0.18 45); /* Low - dark orange */
-  --mood-bipolar-minus-1: oklch(0.75 0.15 75); /* Slightly low - amber */
-  --mood-bipolar-0: oklch(0.65 0.2 145); /* Stable - green */
-  --mood-bipolar-plus-1: oklch(0.8 0.17 95); /* Slightly elevated - yellow */
-  --mood-bipolar-plus-2: oklch(0.7 0.13 195); /* Elevated - cyan */
-  --mood-bipolar-plus-3: oklch(0.6 0.18 295); /* Very elevated - violet */
+  --mood-bipolar-minus-3: oklch(0.55 0.22 25);
+  --mood-bipolar-minus-2: oklch(0.6 0.18 45);
+  --mood-bipolar-minus-1: oklch(0.75 0.15 75);
+  --mood-bipolar-0: oklch(0.65 0.2 145);
+  --mood-bipolar-plus-1: oklch(0.8 0.17 95);
+  --mood-bipolar-plus-2: oklch(0.7 0.13 195);
+  --mood-bipolar-plus-3: oklch(0.6 0.18 295);
 }
 
-/* =============================================================================
-   MOODTRACE DARK THEME
-   Soft dark, not too aggressive (#1A1A1A background)
-   ============================================================================= */
+/* Dark Mode - Adjusted for consistency but keeping dark base */
 .dark {
-  /* Background - Soft dark, not pure black */
   --background: oklch(0.18 0.01 250);
   --foreground: oklch(0.92 0.01 250);
 
-  /* Card */
   --card: oklch(0.22 0.01 250);
   --card-foreground: oklch(0.92 0.01 250);
 
-  /* Popover */
   --popover: oklch(0.22 0.01 250);
   --popover-foreground: oklch(0.92 0.01 250);
 
-  /* Primary - Teal (slightly brighter for dark mode) */
   --primary: oklch(0.65 0.12 195);
   --primary-foreground: oklch(0.15 0.01 250);
 
-  /* Secondary - Soft green (slightly brighter) */
-  --secondary: oklch(0.7 0.13 155);
-  --secondary-foreground: oklch(0.15 0.01 250);
+  --secondary: oklch(0.3 0.02 195);
+  --secondary-foreground: oklch(0.92 0.01 250);
 
-  /* Muted */
   --muted: oklch(0.25 0.01 250);
   --muted-foreground: oklch(0.65 0.01 250);
 
-  /* Accent */
   --accent: oklch(0.3 0.02 195);
   --accent-foreground: oklch(0.92 0.01 250);
 
-  /* Destructive */
   --destructive: oklch(0.55 0.2 25);
   --destructive-foreground: oklch(1 0 0);
 
-  /* Border & Input */
   --border: oklch(0.3 0.01 250);
   --input: oklch(0.3 0.01 250);
   --ring: oklch(0.65 0.12 195);
 
-  /* Chart colors - MoodTrace dark theme */
-  --chart-1: oklch(0.65 0.12 195); /* Teal primary */
-  --chart-2: oklch(0.7 0.13 155); /* Green secondary */
-  --chart-3: oklch(0.75 0.15 75); /* Warning orange */
-  --chart-4: oklch(0.65 0.15 300); /* Violet */
-  --chart-5: oklch(0.7 0.18 350); /* Pink */
-
-  /* Sidebar */
   --sidebar: oklch(0.22 0.01 250);
   --sidebar-foreground: oklch(0.92 0.01 250);
   --sidebar-primary: oklch(0.65 0.12 195);
@@ -356,63 +291,6 @@
   --sidebar-accent-foreground: oklch(0.92 0.01 250);
   --sidebar-border: oklch(0.3 0.01 250);
   --sidebar-ring: oklch(0.65 0.12 195);
-
-  /* Typography */
-  --font-sans:
-    Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
-  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
-
-  /* Radius */
-  --radius: 0.375rem;
-
-  /* Shadows (slightly more subtle in dark mode) */
-  --shadow-x: 0;
-  --shadow-y: 1px;
-  --shadow-blur: 3px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.2;
-  --shadow-color: oklch(0 0 0);
-  --shadow-2xs: 0 1px 2px 0 rgb(0 0 0 / 0.1);
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.15);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.2), 0 1px 2px -1px rgb(0 0 0 / 0.2);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.2), 0 1px 2px -1px rgb(0 0 0 / 0.2);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2);
-  --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2);
-  --shadow-xl:
-    0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.4);
-
-  /* Semantic colors */
-  --success: oklch(0.65 0.2 145);
-  --success-foreground: oklch(1 0 0);
-  --warning: oklch(0.75 0.15 75);
-  --warning-foreground: oklch(0.2 0.05 75);
-  --info: oklch(0.6 0.15 250);
-  --info-foreground: oklch(1 0 0);
-
-  /* Mood colors (same values, work well in dark mode) */
-  --mood-1: oklch(0.4 0.12 30);
-  --mood-2: oklch(0.5 0.2 25);
-  --mood-3: oklch(0.58 0.2 25);
-  --mood-4: oklch(0.63 0.18 45);
-  --mood-5: oklch(0.78 0.15 85);
-  --mood-6: oklch(0.73 0.18 125);
-  --mood-7: oklch(0.68 0.17 145);
-  --mood-8: oklch(0.68 0.14 165);
-  --mood-9: oklch(0.68 0.12 185);
-  --mood-10: oklch(0.73 0.13 195);
-
-  /* Bipolar mood colors (-3 to +3 scale) - slightly brighter for dark mode */
-  --mood-bipolar-minus-3: oklch(0.58 0.22 25); /* Very low - red */
-  --mood-bipolar-minus-2: oklch(0.63 0.18 45); /* Low - dark orange */
-  --mood-bipolar-minus-1: oklch(0.78 0.15 75); /* Slightly low - amber */
-  --mood-bipolar-0: oklch(0.68 0.2 145); /* Stable - green */
-  --mood-bipolar-plus-1: oklch(0.82 0.17 95); /* Slightly elevated - yellow */
-  --mood-bipolar-plus-2: oklch(0.73 0.13 195); /* Elevated - cyan */
-  --mood-bipolar-plus-3: oklch(0.63 0.18 295); /* Very elevated - violet */
 }
 
 @layer base {
@@ -423,6 +301,7 @@
     @apply bg-background text-foreground;
   }
 
+  /* ... Typography styles kept from original ... */
   .typography {
     max-width: 65ch;
     color: var(--color-foreground);

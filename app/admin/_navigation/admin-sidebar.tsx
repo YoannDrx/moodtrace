@@ -24,46 +24,53 @@ import type { PropsWithChildren } from "react";
 import { useState } from "react";
 import { getAdminNavigation } from "./admin-navigation.links";
 
+import { MobileBottomNav } from "@/components/ui/mobile-bottom-nav";
+
+// ... existing imports ...
+
 export function AdminSidebar() {
   const links: NavigationGroup[] = getAdminNavigation();
 
   return (
-    <Sidebar variant="inset">
-      <SidebarHeader className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg">
-            <span className="text-sm font-semibold">A</span>
+    <>
+      <Sidebar variant="inset">
+        <SidebarHeader className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 px-2 py-1.5">
+            <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg">
+              <span className="text-sm font-semibold">A</span>
+            </div>
+            <span className="font-semibold">Admin Panel</span>
           </div>
-          <span className="font-semibold">Admin Panel</span>
-        </div>
-      </SidebarHeader>
-      <SidebarContent>
-        {links.map((link) => (
-          <ItemCollapsing
-            defaultOpenStartPath={link.defaultOpenStartPath}
-            key={link.title}
-          >
-            <SidebarGroup key={link.title}>
-              <SidebarGroupLabel asChild>
-                <CollapsibleTrigger>
-                  {link.title}
-                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                </CollapsibleTrigger>
-              </SidebarGroupLabel>
-              <CollapsibleContent>
-                <SidebarGroupContent>
-                  <SidebarNavigationMenu link={link} />
-                </SidebarGroupContent>
-              </CollapsibleContent>
-            </SidebarGroup>
-          </ItemCollapsing>
-        ))}
-      </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-2">
-        <SidebarUserButton />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+        </SidebarHeader>
+        <SidebarContent>
+          {links.map((link) => (
+            <ItemCollapsing
+              defaultOpenStartPath={link.defaultOpenStartPath}
+              key={link.title}
+            >
+              <SidebarGroup key={link.title}>
+                <SidebarGroupLabel asChild>
+                  <CollapsibleTrigger>
+                    {link.title}
+                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                  </CollapsibleTrigger>
+                </SidebarGroupLabel>
+                <CollapsibleContent>
+                  <SidebarGroupContent>
+                    <SidebarNavigationMenu link={link} />
+                  </SidebarGroupContent>
+                </CollapsibleContent>
+              </SidebarGroup>
+            </ItemCollapsing>
+          ))}
+        </SidebarContent>
+        <SidebarFooter className="flex flex-col gap-2">
+          <SidebarUserButton />
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
+      <MobileBottomNav groups={links} />
+    </>
   );
 }
 
