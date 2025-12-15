@@ -1,16 +1,33 @@
 "use client";
 
 import { MoodScale, type MoodValue } from "@/components/nowts/mood-indicator";
+import { StepIndicator } from "@/components/nowts/stat-card";
 import { Typography } from "@/components/nowts/typography";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { resolveActionResult } from "@/lib/actions/actions-utils";
+import { moodLabels } from "@/lib/design-tokens";
 import { useMutation } from "@tanstack/react-query";
-import { Battery, BedDouble, Brain, Loader2, Save } from "lucide-react";
-import { useState } from "react";
+import {
+  Battery,
+  BedDouble,
+  Brain,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  MessageSquare,
+  Save,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { saveMoodEntryAction } from "./mood.action";
 import {
@@ -50,14 +67,30 @@ export function MoodEntryForm({
   const [anxiety, setAnxiety] = useState(initialData?.anxiety ?? 3);
   const [notes, setNotes] = useState(initialData?.notes ?? "");
 
-  const [showOptional, setShowOptional] = useState(
-    Boolean(
-      initialData?.energy ??
-      initialData?.sleepHours ??
-      initialData?.sleepQuality ??
-      initialData?.anxiety,
-    ),
-  );
+  const [includeDetails, setIncludeDetails] = useState(true);
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const steps = useMemo(() => {
+    const quickSteps = [
+      { label: "Humeur", Icon: Brain },
+      { label: "Notes", Icon: MessageSquare },
+    ] as const;
+
+    const fullSteps = [
+      { label: "Humeur", Icon: Brain },
+      { label: "Sommeil", Icon: BedDouble },
+      { label: "Énergie", Icon: Battery },
+      { label: "Notes", Icon: MessageSquare },
+    ] as const;
+
+    return includeDetails ? fullSteps : quickSteps;
+  }, [includeDetails]);
+
+  const totalSteps = steps.length;
+
+  useEffect(() => {
+    setCurrentStep((step) => Math.min(step, totalSteps));
+  }, [totalSteps]);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -65,10 +98,10 @@ export function MoodEntryForm({
         saveMoodEntryAction({
           date: today,
           mood,
-          energy: showOptional ? energy : null,
-          sleepHours: showOptional ? sleepHours : null,
-          sleepQuality: showOptional ? sleepQuality : null,
-          anxiety: showOptional ? anxiety : null,
+          energy: includeDetails ? energy : null,
+          sleepHours: includeDetails ? sleepHours : null,
+          sleepQuality: includeDetails ? sleepQuality : null,
+          anxiety: includeDetails ? anxiety : null,
           notes: notes || null,
         }),
       );
@@ -82,158 +115,226 @@ export function MoodEntryForm({
     },
   });
 
+  const goToPrevious = () => {
+    setCurrentStep((step) => Math.max(1, step - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentStep((step) => Math.min(totalSteps, step + 1));
+  };
+
+  const isLastStep = currentStep === totalSteps;
+  const isFirstStep = currentStep === 1;
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Brain className="text-primary size-5" />
-          Comment vous sentez-vous ?
-        </CardTitle>
-        <Typography variant="muted">
-          {new Date(today).toLocaleDateString("fr-FR", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-          })}
-        </Typography>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Mood Scale - Main */}
-        <div className="space-y-3">
-          <Label className="text-base font-medium">Humeur</Label>
-          <MoodScale
-            value={mood}
-            onChange={setMood}
-            className="justify-center"
-          />
-        </div>
-
-        {/* Toggle optional fields */}
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => setShowOptional(!showOptional)}
-          className="w-full"
-        >
-          {showOptional ? "Masquer les details" : "Ajouter plus de details"}
-        </Button>
-
-        {showOptional && (
-          <div className="space-y-6 border-t pt-6">
-            {/* Energy */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label className="flex items-center gap-2">
-                  <Battery className="text-primary size-4" />
-                  Energie
-                </Label>
-                <span className="text-muted-foreground text-sm">
-                  {ENERGY_LABELS[energy]}
-                </span>
-              </div>
-              <Slider
-                value={[energy]}
-                onValueChange={([v]) => setEnergy(v)}
-                min={1}
-                max={10}
-                step={1}
-                className="py-2"
-              />
-            </div>
-
-            {/* Sleep Hours */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label className="flex items-center gap-2">
-                  <BedDouble className="text-primary size-4" />
-                  Heures de sommeil
-                </Label>
-                <span className="text-muted-foreground text-sm">
-                  {sleepHours}h
-                </span>
-              </div>
-              <Slider
-                value={[sleepHours]}
-                onValueChange={([v]) => setSleepHours(v)}
-                min={0}
-                max={14}
-                step={0.5}
-                className="py-2"
-              />
-            </div>
-
-            {/* Sleep Quality */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label>Qualite du sommeil</Label>
-                <span className="text-muted-foreground text-sm">
-                  {SLEEP_QUALITY_LABELS[sleepQuality]}
-                </span>
-              </div>
-              <Slider
-                value={[sleepQuality]}
-                onValueChange={([v]) => setSleepQuality(v)}
-                min={1}
-                max={10}
-                step={1}
-                className="py-2"
-              />
-            </div>
-
-            {/* Anxiety */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label>Anxiete</Label>
-                <span className="text-muted-foreground text-sm">
-                  {ANXIETY_LABELS[anxiety]}
-                </span>
-              </div>
-              <Slider
-                value={[anxiety]}
-                onValueChange={([v]) => setAnxiety(v)}
-                min={1}
-                max={10}
-                step={1}
-                className="py-2"
-              />
-            </div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex flex-col gap-1">
+            <CardTitle className="flex items-center gap-2">
+              <Brain className="text-primary size-5" />
+              Check-in quotidien
+            </CardTitle>
+            <Typography variant="muted">
+              {new Date(today).toLocaleDateString("fr-FR", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              })}
+            </Typography>
           </div>
-        )}
-
-        {/* Notes */}
-        <div className="space-y-2">
-          <Label htmlFor="notes">Notes (optionnel)</Label>
-          <Textarea
-            id="notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Comment s'est passee votre journee ?"
-            rows={3}
-            maxLength={2000}
-          />
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setIncludeDetails((v) => !v)}
+            className="w-fit"
+          >
+            {includeDetails ? "Check-in rapide" : "Ajouter des détails"}
+          </Button>
         </div>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-8">
+        <StepIndicator
+          totalSteps={totalSteps}
+          currentStep={currentStep}
+          labels={steps.map((s) => s.label)}
+          icons={steps.map((s) => s.Icon)}
+        />
 
-        {/* Submit */}
-        <Button
-          onClick={() => mutation.mutate()}
-          disabled={mutation.isPending}
-          className="w-full"
-          size="lg"
-        >
-          {mutation.isPending ? (
-            <>
-              <Loader2 className="mr-2 size-4 animate-spin" />
-              Enregistrement...
-            </>
-          ) : (
-            <>
-              <Save className="mr-2 size-4" />
-              Enregistrer
-            </>
+        <div className="animate-fade-in flex flex-col gap-6">
+          {/* Step 1 — Mood */}
+          {currentStep === 1 && (
+            <div className="flex flex-col gap-4">
+              <div className="flex items-end justify-between gap-4">
+                <Label className="text-base font-medium">Humeur</Label>
+                <Typography variant="small" className="text-muted-foreground">
+                  {mood}/10 · {moodLabels[mood]}
+                </Typography>
+              </div>
+              <MoodScale
+                value={mood}
+                onChange={setMood}
+                className="justify-center"
+              />
+              <Typography variant="caption" className="text-center">
+                Choisissez une note qui reflète votre journée, sans jugement.
+              </Typography>
+            </div>
           )}
-        </Button>
+
+          {/* Step 2 — Sleep (only in detailed mode) */}
+          {includeDetails && currentStep === 2 && (
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between gap-4">
+                  <Label className="flex items-center gap-2">
+                    <BedDouble className="text-primary size-4" />
+                    Heures de sommeil
+                  </Label>
+                  <Typography variant="small" className="text-muted-foreground">
+                    {sleepHours}h
+                  </Typography>
+                </div>
+                <Slider
+                  value={[sleepHours]}
+                  onValueChange={([v]) => setSleepHours(v)}
+                  min={0}
+                  max={14}
+                  step={0.5}
+                  className="py-2"
+                />
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between gap-4">
+                  <Label>Qualite du sommeil</Label>
+                  <Typography variant="small" className="text-muted-foreground">
+                    {SLEEP_QUALITY_LABELS[sleepQuality]}
+                  </Typography>
+                </div>
+                <Slider
+                  value={[sleepQuality]}
+                  onValueChange={([v]) => setSleepQuality(v)}
+                  min={1}
+                  max={10}
+                  step={1}
+                  className="py-2"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 3 — Energy & Anxiety (only in detailed mode) */}
+          {includeDetails && currentStep === 3 && (
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between gap-4">
+                  <Label className="flex items-center gap-2">
+                    <Battery className="text-primary size-4" />
+                    Energie
+                  </Label>
+                  <Typography variant="small" className="text-muted-foreground">
+                    {ENERGY_LABELS[energy]}
+                  </Typography>
+                </div>
+                <Slider
+                  value={[energy]}
+                  onValueChange={([v]) => setEnergy(v)}
+                  min={1}
+                  max={10}
+                  step={1}
+                  className="py-2"
+                />
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between gap-4">
+                  <Label>Anxiete</Label>
+                  <Typography variant="small" className="text-muted-foreground">
+                    {ANXIETY_LABELS[anxiety]}
+                  </Typography>
+                </div>
+                <Slider
+                  value={[anxiety]}
+                  onValueChange={([v]) => setAnxiety(v)}
+                  min={1}
+                  max={10}
+                  step={1}
+                  className="py-2"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Final step — Notes */}
+          {((includeDetails && currentStep === 4) ||
+            (!includeDetails && currentStep === 2)) && (
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="notes">Notes (optionnel)</Label>
+              <Textarea
+                id="notes"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Comment s'est passee votre journee ?"
+                rows={4}
+                maxLength={2000}
+              />
+              <Typography variant="caption">
+                Vous pouvez noter un contexte, un changement de traitement, ou
+                tout élément utile pour votre suivi.
+              </Typography>
+            </div>
+          )}
+        </div>
       </CardContent>
+      <CardFooter className="border-t">
+        <div className="flex w-full flex-col gap-3 sm:flex-row">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            className="flex-1 justify-center gap-2"
+            onClick={goToPrevious}
+            disabled={isFirstStep || mutation.isPending}
+          >
+            <ChevronLeft className="size-4" />
+            Précédent
+          </Button>
+
+          {isLastStep ? (
+            <Button
+              onClick={() => mutation.mutate()}
+              disabled={mutation.isPending}
+              className="flex-1 justify-center gap-2"
+              size="lg"
+            >
+              {mutation.isPending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Enregistrement...
+                </>
+              ) : (
+                <>
+                  <Save className="size-4" />
+                  Enregistrer
+                </>
+              )}
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              size="lg"
+              className="flex-1 justify-center gap-2"
+              onClick={goToNext}
+              disabled={mutation.isPending}
+            >
+              Suivant
+              <ChevronRight className="size-4" />
+            </Button>
+          )}
+        </div>
+      </CardFooter>
     </Card>
   );
 }

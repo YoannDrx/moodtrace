@@ -163,6 +163,7 @@
 
   /* Primary - Teal #0E7980 */
   --primary: oklch(0.52 0.12 205); /* #0E7980 matches this teal range */
+  --primary-hover: oklch(0.46 0.12 205); /* Slightly darker for hover */
   --primary-foreground: oklch(1 0 0); /* White text on primary */
 
   /* Secondary - Accent Surface #E6F0F1 (Very light cyan/blue) */
@@ -265,6 +266,7 @@
   --popover-foreground: oklch(0.92 0.01 250);
 
   --primary: oklch(0.65 0.12 195);
+  --primary-hover: oklch(0.6 0.12 195);
   --primary-foreground: oklch(0.15 0.01 250);
 
   --secondary: oklch(0.3 0.02 195);

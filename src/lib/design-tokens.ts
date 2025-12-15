@@ -20,17 +20,17 @@
 export const colors = {
   brand: {
     primary: {
-      DEFAULT: "#2A8FA8",
-      50: "#E6F4F7",
-      100: "#CCE9EF",
-      200: "#99D3DF",
-      300: "#66BDCF",
-      400: "#33A7BF",
-      500: "#2A8FA8",
-      600: "#227286",
-      700: "#1A5665",
-      800: "#113943",
-      900: "#091D22",
+      DEFAULT: "#0E7980",
+      50: "#ECF4F5",
+      100: "#D8EAEB",
+      200: "#B2D4D6",
+      300: "#8BBFC2",
+      400: "#65A9AE",
+      500: "#0E7980",
+      600: "#0C6A71",
+      700: "#0B5C61",
+      800: "#094D52",
+      900: "#073F43",
     },
     secondary: {
       DEFAULT: "#48A878",
@@ -48,7 +48,7 @@ export const colors = {
   },
 
   background: {
-    light: "#F8F7F3",
+    light: "#FDFBF7",
     dark: "#1A1A1A",
     card: {
       light: "#FFFFFF",
@@ -57,10 +57,10 @@ export const colors = {
   },
 
   foreground: {
-    light: "#1F2937",
+    light: "#1A202C",
     dark: "#F3F4F6",
     muted: {
-      light: "#6B7280",
+      light: "#718096",
       dark: "#9CA3AF",
     },
   },
@@ -113,7 +113,7 @@ export const colors = {
    * Couleurs pour les graphiques
    */
   chart: {
-    1: "#2A8FA8", // Primary teal
+    1: "#0E7980", // Primary teal
     2: "#48A878", // Secondary green
     3: "#F59E0B", // Warning orange
     4: "#8B5CF6", // Violet
@@ -121,12 +121,12 @@ export const colors = {
   },
 
   border: {
-    light: "#E5E7EB",
+    light: "#EDF2F7",
     dark: "#374151",
   },
 
   input: {
-    light: "#E5E7EB",
+    light: "#EDF2F7",
     dark: "#4B5563",
   },
 } as const;
@@ -141,18 +141,18 @@ export const colors = {
  */
 export const oklchColors = {
   light: {
-    background: "oklch(0.98 0.005 85)", // #F8F7F3
+    background: "oklch(0.98 0.01 95)", // #FDFBF7
     foreground: "oklch(0.25 0.02 250)",
     card: "oklch(1 0 0)",
     cardForeground: "oklch(0.25 0.02 250)",
     popover: "oklch(1 0 0)",
     popoverForeground: "oklch(0.25 0.02 250)",
-    primary: "oklch(0.58 0.12 195)", // #2A8FA8
+    primary: "oklch(0.52 0.12 205)", // #0E7980
     primaryForeground: "oklch(1 0 0)",
     secondary: "oklch(0.65 0.13 155)", // #48A878
     secondaryForeground: "oklch(1 0 0)",
     muted: "oklch(0.96 0.005 85)",
-    mutedForeground: "oklch(0.45 0.02 250)",
+    mutedForeground: "oklch(0.55 0.03 260)",
     accent: "oklch(0.92 0.03 195)",
     accentForeground: "oklch(0.25 0.02 250)",
     destructive: "oklch(0.55 0.2 25)",
@@ -165,7 +165,7 @@ export const oklchColors = {
     infoForeground: "oklch(1 0 0)",
     border: "oklch(0.9 0.005 250)",
     input: "oklch(0.9 0.005 250)",
-    ring: "oklch(0.58 0.12 195)",
+    ring: "oklch(0.52 0.12 205)",
   },
   dark: {
     background: "oklch(0.18 0.01 250)", // #1A1A1A

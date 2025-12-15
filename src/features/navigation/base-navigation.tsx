@@ -23,13 +23,13 @@ export function BaseNavigation({ children }: PropsWithChildren) {
   return (
     <SidebarProvider id="app-sidebar">
       <BaseSidebar />
-      <SidebarInset className="border-border border">
-        <header className="flex h-16 shrink-0 items-center gap-2">
-          <Layout size="lg">
+      <SidebarInset>
+        <header className="bg-background/80 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 flex h-16 shrink-0 items-center border-b backdrop-blur">
+          <Layout size="lg" className="mt-0">
             <SidebarTrigger className="-ml-1" />
           </Layout>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+        <div className="flex flex-1 flex-col pb-24 md:pb-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
@@ -37,9 +37,9 @@ export function BaseNavigation({ children }: PropsWithChildren) {
 
 const BaseSidebar = () => {
   return (
-    <Sidebar variant="inset">
-      <SidebarHeader>
-        <div className="mb-4 flex flex-row items-center gap-2">
+    <Sidebar variant="sidebar">
+      <SidebarHeader className="border-b p-4">
+        <div className="flex flex-row items-center gap-2">
           <LogoSvg size={24} />
           <Typography>{SiteConfig.title}</Typography>
         </div>

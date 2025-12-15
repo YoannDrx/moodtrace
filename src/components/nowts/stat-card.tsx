@@ -144,7 +144,7 @@ export function StepIndicator({
                     "bg-primary text-primary-foreground ring-primary/20 ring-4",
                   !isCompleted &&
                     !isCurrent &&
-                    "bg-muted text-muted-foreground",
+                    "bg-border text-muted-foreground",
                 )}
               >
                 {isCompleted ? (
@@ -186,7 +186,7 @@ export function StepIndicator({
               <div
                 className={cn(
                   "mx-2 h-0.5 flex-1",
-                  stepNumber < currentStep ? "bg-primary" : "bg-muted",
+                  stepNumber < currentStep ? "bg-primary" : "bg-border",
                 )}
               />
             )}

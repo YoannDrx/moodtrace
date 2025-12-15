@@ -42,7 +42,7 @@ export const SpaceSelector = (props: SpaceSelectorProps) => {
               data-testid="space-selector"
               variant="default"
               size="lg"
-              className="border-border bg-input dark:bg-input/30 rounded-md border"
+              className="border-border bg-background dark:bg-input/30 rounded-lg border"
             >
               {currentSpace ? (
                 <span className="inline-flex w-full items-center gap-2">

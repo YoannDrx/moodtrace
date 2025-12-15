@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { MobileBottomNav } from "@/components/ui/mobile-bottom-nav";
+import { Typography } from "@/components/nowts/typography";
+import { LogoSvg } from "@/components/svg/logo-svg";
 import {
   Sidebar,
   SidebarContent,
@@ -17,6 +19,7 @@ import type { NavigationGroup } from "@/features/navigation/navigation.type";
 import { SidebarUserButton } from "@/features/sidebar/sidebar-user-button";
 import type { AuthRole } from "@/lib/auth/auth-permissions";
 import type { UserSpaceWithRole } from "@/query/org/get-users-orgs.query";
+import { SiteConfig } from "@/site-config";
 import { ArrowLeft, Settings } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -64,10 +67,16 @@ export function SpaceSidebar({
 
   return (
     <>
-      <Sidebar variant="inset">
-        <SidebarHeader className="flex flex-col gap-2">
+      <Sidebar variant="sidebar">
+        <SidebarHeader className="flex flex-col gap-4 border-b p-4">
+          <div className="flex items-center gap-2">
+            <LogoSvg size={18} className="text-primary" />
+            <Typography as="span" variant="large" className="leading-none">
+              {SiteConfig.title}
+            </Typography>
+          </div>
           {isSettingsPage ? (
-            <Button variant="ghost" className="justify-start" asChild>
+            <Button variant="ghost" className="justify-start gap-2" asChild>
               <Link href={basePath} prefetch={false}>
                 <ArrowLeft className="size-4" />
                 <span>Retour au tableau de bord</span>
@@ -80,7 +89,7 @@ export function SpaceSidebar({
             </>
           )}
         </SidebarHeader>
-        <SidebarContent className="border-card">
+        <SidebarContent className="py-3">
           {links.map((link) => (
             <SidebarGroup key={link.title}>
               <SidebarGroupLabel>{link.title}</SidebarGroupLabel>
@@ -90,7 +99,7 @@ export function SpaceSidebar({
             </SidebarGroup>
           ))}
         </SidebarContent>
-        <SidebarFooter className="flex flex-col gap-2">
+        <SidebarFooter className="flex flex-col gap-2 border-t p-4">
           {!isSettingsPage && (
             <>
               <UpgradeCard />

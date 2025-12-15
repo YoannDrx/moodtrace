@@ -23,8 +23,8 @@ export async function NavigationWrapper({
   topBarCornerLeftChildren?: ReactNode;
 }) {
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className="bg-muted/40 hidden border-r md:block">
+    <div className="bg-background grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+      <div className="bg-card hidden border-r md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center gap-2 border-b px-4 lg:h-[60px] lg:px-6">
             <LogoSvg size={32} />
@@ -38,7 +38,7 @@ export async function NavigationWrapper({
         </div>
       </div>
       <div className="flex max-h-screen flex-col">
-        <header className="bg-muted/40 flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6">
+        <header className="bg-background/80 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 flex h-14 items-center gap-4 border-b px-4 backdrop-blur lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button

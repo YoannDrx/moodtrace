@@ -27,7 +27,8 @@ export function MobileBottomNav({ groups }: MobileBottomNavProps) {
   return (
     <div className="bg-card border-border fixed bottom-0 left-0 right-0 z-50 flex h-16 items-center justify-around border-t px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-2px_10px_rgba(0,0,0,0.03)] md:hidden">
       {displayLinks.map((link) => {
-        const isActive = pathname === link.href || pathname.startsWith(`${link.href  }/`);
+        const isActive =
+          pathname === link.href || pathname.startsWith(`${link.href}/`);
         const Icon = link.Icon;
         
         return (
@@ -35,10 +36,10 @@ export function MobileBottomNav({ groups }: MobileBottomNavProps) {
             key={link.href}
             href={link.href}
             className={cn(
-              "flex flex-1 flex-col items-center justify-center gap-1 py-1 transition-colors",
-              isActive 
-                ? "text-primary" 
-                : "text-muted-foreground hover:text-foreground"
+              "flex flex-1 flex-col items-center justify-center gap-1 rounded-lg py-2 transition-colors",
+              isActive
+                ? "bg-secondary text-primary"
+                : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
             )}
           >
             <Icon className={cn("size-6", isActive && "stroke-2")} />

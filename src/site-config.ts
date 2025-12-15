@@ -11,7 +11,7 @@ export const SiteConfig = {
     address: "Paris, France",
   },
   brand: {
-    primary: "#2A8FA8", // Teal - Trust, calm, medical
+    primary: "#0E7980", // Teal - Trust, calm, medical
     secondary: "#48A878", // Green - Healing, progress
   },
   team: {

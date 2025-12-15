@@ -50,7 +50,7 @@ export default function RootLayout({ children, modal }: LayoutProps<"/">) {
             <NextTopLoader
               delay={100}
               showSpinner={false}
-              color="hsl(var(--primary))"
+              color="var(--primary)"
             />
             <Suspense fallback={null}>
               {children}

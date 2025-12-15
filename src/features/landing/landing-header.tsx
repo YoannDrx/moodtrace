@@ -58,7 +58,7 @@ export function LandingHeader() {
       style={{
         height: useTransform(scrollYBoundedProgressDelayed, [0, 1], [80, 50]),
       }}
-      className="fixed inset-x-0 z-50 flex h-20 w-screen shadow backdrop-blur-md"
+      className="bg-background/80 supports-[backdrop-filter]:bg-background/70 fixed inset-x-0 z-50 flex h-20 w-screen border-b backdrop-blur"
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-8">
         <div className="flex items-center gap-1">

@@ -33,9 +33,9 @@ export function AdminSidebar() {
 
   return (
     <>
-      <Sidebar variant="inset">
-        <SidebarHeader className="flex flex-col gap-2">
-          <div className="flex items-center gap-2 px-2 py-1.5">
+      <Sidebar variant="sidebar">
+        <SidebarHeader className="flex flex-col gap-3 border-b p-4">
+          <div className="flex items-center gap-2">
             <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg">
               <span className="text-sm font-semibold">A</span>
             </div>
@@ -64,7 +64,7 @@ export function AdminSidebar() {
             </ItemCollapsing>
           ))}
         </SidebarContent>
-        <SidebarFooter className="flex flex-col gap-2">
+        <SidebarFooter className="flex flex-col gap-2 border-t p-4">
           <SidebarUserButton />
         </SidebarFooter>
         <SidebarRail />
