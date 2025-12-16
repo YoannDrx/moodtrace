@@ -1,7 +1,10 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,11 +13,11 @@ export function Header() {
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
             M
           </div>
-          <span className="text-xl font-bold text-foreground">MoodTrace</span>
+          <span className="text-xl font-bold text-foreground">MoodJournal</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -25,66 +28,60 @@ export function Header() {
           <a href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Comment ça marche
           </a>
-          <Link to="/about" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-            À propos
-          </Link>
         </nav>
 
         {/* CTA Buttons */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
+          <ThemeToggle />
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/auth">Se connecter</Link>
+            <Link href="/auth/signin">Se connecter</Link>
           </Button>
           <Button size="sm" asChild>
-            <Link to="/app">Commencer</Link>
+            <Link href="/space/demo">Commencer</Link>
           </Button>
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          className="md:hidden p-2 text-foreground"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <button
+            className="p-2 text-foreground"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="absolute left-0 right-0 top-16 border-b border-border bg-background p-4 shadow-lg md:hidden animate-slide-up">
           <nav className="flex flex-col gap-4">
-            <a 
-              href="#features" 
+            <a
+              href="#features"
               className="text-base font-medium text-muted-foreground hover:text-primary"
               onClick={() => setIsMenuOpen(false)}
             >
               Fonctionnalités
             </a>
-            <a 
-              href="#how-it-works" 
+            <a
+              href="#how-it-works"
               className="text-base font-medium text-muted-foreground hover:text-primary"
               onClick={() => setIsMenuOpen(false)}
             >
               Comment ça marche
             </a>
-            <Link 
-              to="/about" 
-              className="text-base font-medium text-muted-foreground hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              À propos
-            </Link>
             <hr className="border-border" />
-            <Link 
-              to="/auth" 
+            <Link
+              href="/auth/signin"
               className="text-base font-medium text-muted-foreground hover:text-primary"
               onClick={() => setIsMenuOpen(false)}
             >
               Se connecter
             </Link>
             <Button asChild className="w-full">
-              <Link to="/app" onClick={() => setIsMenuOpen(false)}>
+              <Link href="/space/demo" onClick={() => setIsMenuOpen(false)}>
                 Commencer
               </Link>
             </Button>

@@ -1,0 +1,170 @@
+// MoodJournal Prisma Schema
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// MoodJournal Domain Models
+// ============================================
+
+/// MoodEntry - Entrée quotidienne d'humeur (échelle -3 à +3 bipolaire)
+model MoodEntry {
+  id             String   @id @default(nanoid(11))
+  userId         String
+  organizationId String
+  date           DateTime @db.Date
+  mood           Int      // -3 à +3 (bipolaire)
+  energy         Int?     // 1-10
+  sleepHours     Float?
+  sleepQuality   String?  // "bad", "average", "good"
+  anxiety        Int?     // 1-10
+  notes          String?
+  tags           String[] // Tags de contexte
+  sideEffects    String[] // Effets secondaires
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId, date])
+  @@index([userId, date])
+  @@index([organizationId, date])
+  @@map("mood_entry")
+}
+
+/// Medication - Médicament du patient
+model Medication {
+  id             String    @id @default(nanoid(11))
+  userId         String
+  organizationId String
+  name           String    // "Lamictal"
+  molecule       String?   // "Lamotrigine"
+  dosageMg       Int
+  frequency      String    // "daily", "twice_daily", "three_times_daily", "as_needed"
+  timeOfDay      String?   // "morning", "evening", "both", "night"
+  color          String?   // Pour l'UI
+  startDate      DateTime  @db.Date
+  endDate        DateTime? @db.Date
+  isActive       Boolean   @default(true)
+  notes          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  intakes      MedicationIntake[]
+  changes      MedicationChange[]
+
+  @@index([userId, isActive])
+  @@index([organizationId])
+  @@map("medication")
+}
+
+/// MedicationIntake - Prise quotidienne de médicament
+model MedicationIntake {
+  id           String   @id @default(nanoid(11))
+  userId       String
+  medicationId String
+  date         DateTime @db.Date
+  scheduledAt  String?  // "08:00", "20:00"
+  takenAt      String?  // "08:15" ou null si non pris
+  status       String   // "taken", "missed", "skipped", "delayed"
+  notes        String?
+
+  createdAt DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medication Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  @@unique([medicationId, date, scheduledAt])
+  @@index([userId, date])
+  @@index([medicationId, date])
+  @@map("medication_intake")
+}
+
+/// MedicationChange - Historique des changements de dosage
+model MedicationChange {
+  id               String   @id @default(nanoid(11))
+  medicationId     String
+  previousDosageMg Int
+  newDosageMg      Int
+  changeDate       DateTime @db.Date
+  reason           String?  // "augmentation palier", "effet secondaire", "stabilisation"
+  prescribedBy     String?  // Nom du médecin
+
+  createdAt DateTime @default(now())
+
+  medication Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  @@index([medicationId, changeDate])
+  @@map("medication_change")
+}
+
+/// CaregiverDailyCheckin - Check-in quotidien de l'aidant
+model CaregiverDailyCheckin {
+  id        String   @id @default(nanoid(11))
+  authorId  String   // L'aidant qui observe
+  subjectId String   // Le patient observé
+  spaceId   String   // organizationId
+  date      DateTime @db.Date
+
+  // Observations
+  moodObserved   String? // "very_good" | "good" | "neutral" | "down" | "very_down" | "concerning"
+  energyObserved String? // "high" | "normal" | "low" | "very_low"
+  socialBehavior String? // "engaged" | "normal" | "withdrawn" | "isolated"
+  sleepObserved  String? // "good" | "restless" | "insomnia" | "oversleeping"
+  notes          String?
+
+  patientVisibility String @default("visible") // "visible" | "hidden"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author       User         @relation("AuthorCheckins", fields: [authorId], references: [id], onDelete: Cascade)
+  subject      User         @relation("SubjectCheckins", fields: [subjectId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  @@unique([authorId, subjectId, spaceId, date])
+  @@index([subjectId, date])
+  @@index([authorId, date])
+  @@map("caregiver_daily_checkin")
+}
+
+/// CaregiverEvent - Événements ponctuels signalés par l'aidant
+model CaregiverEvent {
+  id        String @id @default(nanoid(11))
+  authorId  String
+  subjectId String
+  spaceId   String
+
+  occurredAt DateTime
+  eventType  String   // "compulsive_purchase" | "crisis" | "conflict" | "milestone" | "medication_issue" | "other"
+  severity   Int      // 1-5
+  title      String
+  details    String?
+
+  patientVisibility String @default("visible")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author       User         @relation("AuthorEvents", fields: [authorId], references: [id], onDelete: Cascade)
+  subject      User         @relation("SubjectEvents", fields: [subjectId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, occurredAt])
+  @@index([authorId, occurredAt])
+  @@index([spaceId, eventType])
+  @@map("caregiver_event")
+}

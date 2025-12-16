@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Heart, BarChart3 } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden px-4 pb-20 pt-32 md:pt-40">
       {/* Subtle gradient background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary-soft/50 to-transparent" />
-      
+
       <div className="container mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
           {/* Badge */}
@@ -24,15 +24,15 @@ export function Hero() {
 
           {/* Subheadline */}
           <p className="mb-10 text-lg text-muted-foreground md:text-xl animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            MoodTrace vous aide à organiser vos observations quotidiennes 
-            pour mieux communiquer avec votre psychiatre ou psychologue. 
+            MoodJournal vous aide à organiser vos observations quotidiennes
+            pour mieux communiquer avec votre psychiatre ou psychologue.
             Simple, respectueux, sans jugement.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row animate-slide-up" style={{ animationDelay: "0.2s" }}>
             <Button asChild size="lg" className="w-full sm:w-auto">
-              <Link to="/app">
+              <Link href="/space/demo">
                 Commencer gratuitement
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
